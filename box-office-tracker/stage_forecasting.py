@@ -31,6 +31,20 @@ def number(value):
         return None
 
 
+def weekend_reported(days):
+    """True once Friday, Saturday and Sunday all carry a REPORTED gross.
+
+    Thursday is not required. The daily-actuals fetcher records a preview row
+    only when The Numbers publishes one and otherwise leaves any previews
+    inside Friday (no-preview openers; previews folded into opening day), so
+    Friday+Saturday+Sunday is the whole weekend either way. 2026-11-20: I Play
+    Rocky had those three days reported ($9.33M) and no Thursday row, stayed
+    "after-sunday" and showed the seat regression's $13.5M.
+    """
+    days = days or {}
+    return all((days.get(d) or {}).get("actual_override") for d in OPENING_DAYS[1:])
+
+
 def forecast_stage(pred):
     # A film that opened before Friday (midweek_opening.py): its reported
     # Wednesday/Thursday are full days, so "after-previews" would mislabel the
@@ -40,11 +54,7 @@ def forecast_stage(pred):
     if midweek_stage:
         return midweek_stage
     days = pred.get("daily_details") or {}
-    if set(OPENING_DAYS).issubset(days):
-        return "complete"
-    # No-preview opener: no Thursday at all, Fri-Sun reported (2026-11-28).
-    if ("Thursday" not in days and {"Friday", "Saturday", "Sunday"} <= set(days)
-            and all((days.get(d) or {}).get("actual_override") for d in ("Friday", "Saturday", "Sunday"))):
+    if set(OPENING_DAYS).issubset(days) or weekend_reported(days):
         return "complete"
     for day, stage in (("Sunday", "after-sunday"), ("Saturday", "after-saturday"),
                        ("Friday", "after-friday"), ("Thursday", "after-previews")):

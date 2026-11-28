@@ -9,6 +9,7 @@ updates day weights, scale factors, and feeds accuracy into trading confidence.
 
 Usage:
     python3 calibrate.py                          # Auto-calibrate last weekend
+    python3 calibrate.py --weekend 2026-11-20     # Grade an earlier weekend's missed films
     python3 calibrate.py --actual "Movie" 85.3    # Manual total override
     python3 calibrate.py --actual "Movie" 85.3 --daily-actuals Thursday=10,Friday=22,Saturday=26,Sunday=27
     python3 calibrate.py --history                 # Show past predictions vs actuals
@@ -267,7 +268,9 @@ def accuracy_entry_from_history(entry):
     """Build the historical_accuracy row implied by one calibration history row."""
     total_actual = _positive_float(entry.get("actual_total", entry.get("actual")))
     total_predicted = _positive_float(entry.get("predicted_mid"))
-    if not total_actual or not total_predicted:
+    if not total_actual or not total_predicted or entry.get("replay_unavailable"):
+        # replay_unavailable: predicted_mid is the live headline standing in
+        # for a replay the model could not produce; not a model accuracy row.
         return None
 
     daily_actuals = entry.get("daily_actuals", {}) or {}
@@ -619,7 +622,8 @@ def record_result(cal, movie, weekend_of, predicted_mid, predicted_low,
                   actual_source=None, actual_status="final",
                   replace_existing=False, daily_sellout_fractions=None,
                   exclude_from_day_weights=False, data_outage=False,
-                  live_headline=None):
+                  live_headline=None, graded_only_reason=None,
+                  replay_unavailable=False):
     """Record daily predicted-vs-actual and update all calibration factors.
 
     predicted_mid stays the REPLAY (the calibration ground truth for fits).
@@ -666,7 +670,7 @@ def record_result(cal, movie, weekend_of, predicted_mid, predicted_low,
     cohort_key = _normalize_model_cohort_key(model_cohort_key)
     if cohort_key:
         entry["model_cohort_key"] = cohort_key
-    reference = _remember_reference_amc_theatres(
+    reference = None if graded_only_reason else _remember_reference_amc_theatres(
         cal,
         reference_amc_theatres,
         model_cohort_key=cohort_key,
@@ -760,6 +764,19 @@ def record_result(cal, movie, weekend_of, predicted_mid, predicted_low,
                 and h.get("weekend_of") == weekend_of
             )
         ]
+
+    if graded_only_reason:
+        # Graded against the live headline, never a fit input. data_outage is
+        # the flag every fit, stage band and bracket sigma already skips
+        # (seat_regression.is_data_outage_entry); no factor is refitted here.
+        entry["data_outage"] = True
+        entry["data_outage_reason"] = graded_only_reason
+        if replay_unavailable:
+            # predicted_* repeat the live headline: the model has no replay.
+            entry["replay_unavailable"] = True
+        cal["history"].append(entry)
+        save_calibration(cal)
+        return entry
 
     cal["history"].append(entry)
 
@@ -859,8 +876,9 @@ def record_pending_calibrations(cal, prediction_cal, weekend_of, pending,
         return []
 
     _drop_existing_pending_entries(cal, weekend_of, pending)
-    reset_calibration_factors_to_prediction_baseline(cal, prediction_cal)
-    rebuild_historical_accuracy(cal)
+    if any(not item.get("graded_only_reason") for item in pending):
+        reset_calibration_factors_to_prediction_baseline(cal, prediction_cal)
+        rebuild_historical_accuracy(cal)
 
     entries = []
     for item in pending:
@@ -891,6 +909,8 @@ def record_pending_calibrations(cal, prediction_cal, weekend_of, pending,
             replace_existing=True,
             data_outage=bool(pred.get("data_outage")),
             live_headline=_live_headline(item["movie"], weekend_of),
+            graded_only_reason=item.get("graded_only_reason"),
+            replay_unavailable=bool(pred.get("replay_unavailable")),
         )
         entries.append(entry)
 
@@ -913,8 +933,43 @@ def _last_friday():
     return (today - timedelta(days=days_since_friday)).strftime("%Y-%m-%d")
 
 
-def auto_calibrate():
-    """Fetch actual daily results and calibrate against our predictions."""
+# A film the live run forecast from reservation snapshots alone has no AMC
+# seat-count rows (2026-11-20: I Play Rocky, AMC lane blocked all weekend). The
+# loop below used to walk seat_data only, so such a film was never graded. It
+# is recorded to grade the live headline and flagged data_outage, which keeps
+# it out of every fit. When the model cannot replay it at all (Rocky's live
+# headline was the outage fallback, then reported days), the live headline
+# stands in for the replay.
+NO_SEAT_ROWS_REASON = "No AMC seat-count rows; graded on the live headline, not a fit input."
+
+
+def live_headline_stand_in(live):
+    """(pred stub, (mid, low, high)) for a film the model cannot replay, or None."""
+    mid = _positive_float((live or {}).get("mid_m"))
+    if not mid:
+        return None
+    stub = {"n_theatres_total": 0, "n_days": 0, "replay_unavailable": True}
+    return stub, (mid, _positive_float(live.get("low_m")) or mid, _positive_float(live.get("high_m")) or mid)
+
+
+def calibration_movie_names(seat_data, snapshot_data, weekend_of):
+    """Films to grade: everything the live forecast run covers (seat films plus
+    snapshot-only ones), minus small-film-gated titles and holdovers."""
+    from predict import prediction_movie_names
+    names = prediction_movie_names(seat_data, snapshot_data)
+    # A film the collectors stopped reading mid-weekend (small_film_gate) has
+    # partial evidence; grading it would bias the stage bands (2026-10-23).
+    kept = set(small_film_gate.filter_titles(names, weekend_of, "calibrate"))
+    # A 2nd/3rd-weekend film is not an opening (holdover.py, 2026-10-31).
+    kept &= set(holdover.without_holdovers(names, weekend_of, "calibrate"))
+    return [m for m in names if m in kept]
+
+
+def auto_calibrate(weekend_of=None):
+    """Fetch actual daily results and calibrate against our predictions.
+
+    weekend_of (CLI: --weekend YYYY-MM-DD) grades an earlier weekend's missed
+    films; the default is the weekend that just closed."""
     from predict import (regression_prediction_values, load_seat_data,
                          load_polymarket_data, load_theatre_counts,
                          load_pre_reservation_data,
@@ -929,7 +984,7 @@ def auto_calibrate():
                          predict_movie)
 
     cal = load_calibration()
-    last_fri = _last_friday()
+    last_fri = weekend_of or _last_friday()
 
     print(f"{'='*60}")
     print(f"  Auto-Calibration — weekend of {last_fri}")
@@ -938,14 +993,9 @@ def auto_calibrate():
     already_done = final_calibrated_movies(cal, last_fri)
 
     seat_data = load_seat_data(weekend_of=last_fri)
-    # A film the collectors stopped reading mid-weekend (small_film_gate) has
-    # partial evidence; grading it would bias the stage bands (2026-10-23).
-    kept = set(small_film_gate.filter_titles(list(seat_data), last_fri, "calibrate"))
-    # A 2nd/3rd-weekend film is not an opening (holdover.py, 2026-10-31).
-    kept &= set(holdover.without_holdovers(list(seat_data), last_fri, "calibrate"))
-    seat_data = {m: rows for m, rows in seat_data.items() if m in kept}
     poly_data = load_polymarket_data(weekend_of=last_fri)
     snapshot_data = load_pre_reservation_data(weekend_of=last_fri)
+    movies = calibration_movie_names(seat_data, snapshot_data, last_fri)
     social_data = load_social_signal_data(weekend_of=last_fri)
     # National theatre counts feed the AMC-share / national-count blend in
     # predict_movie. Skipping them here makes calibrate.py's "predicted" number
@@ -981,11 +1031,11 @@ def auto_calibrate():
               f"{last_fri} (the links file holds only the current weekend) — "
               "the daypart rescue is inactive for this recording")
 
-    if not seat_data:
-        print(f"\n  No seat data for weekend {last_fri}. Nothing to calibrate.")
+    if not movies:
+        print(f"\n  No seat or reservation data for weekend {last_fri}. Nothing to calibrate.")
         return
 
-    eligible_movies = [movie for movie in seat_data if movie not in already_done]
+    eligible_movies = [movie for movie in movies if movie not in already_done]
     if eligible_movies:
         freeze_path = save_calibration_freeze(
             DATA_DIR,
@@ -1007,12 +1057,16 @@ def auto_calibrate():
     # Predict everything from a frozen pre-calibration state so later movies do
     # not benefit from actuals recorded earlier in the same Tuesday run.
     pending = []
-    for movie in seat_data:
+    for movie in movies:
         if movie in already_done:
             print(f"\n  {movie}: already calibrated, skipping")
             continue
 
         print(f"\n  {movie}:")
+        movie_seat_rows = movie_mapping_get(seat_data, movie, {})
+        graded_only_reason = None if movie_seat_rows else NO_SEAT_ROWS_REASON
+        if graded_only_reason:
+            print("    no AMC seat-count rows — graded on the live headline only")
 
         nat_count = national_theatre_count_for_movie(
             movie,
@@ -1024,22 +1078,28 @@ def auto_calibrate():
         pred = predict_pre_actual_movie(
             predict_movie,
             movie,
-            seat_data[movie],
+            movie_seat_rows,
             poly_data.get(movie, []),
             prediction_cal,
             national_theatre_count=nat_count,
-            snapshot_data=snapshot_data.get(movie, {}),
+            snapshot_data=movie_mapping_get(snapshot_data, movie, {}),
             social_data=social_data,
             cross_chain_data=cross_chain_data,
             reviews_data=reviews_data,
             showtime_link_profiles=movie_mapping_get(showtime_link_profiles, movie, {}),
         )
-        if not pred:
+        stand_in = None
+        if not pred and graded_only_reason:
+            stand_in = live_headline_stand_in(_live_headline(movie, last_fri))
+        if stand_in:
+            pred, (predicted, predicted_low, predicted_high) = stand_in
+            print(f"    No replay possible; live headline ${predicted:.1f}M stands in")
+        elif not pred:
             print(f"    No prediction possible")
             continue
-
-        predicted, predicted_low, predicted_high = regression_prediction_values(pred)
-        print(f"    Our regression prediction: ${predicted:.1f}M")
+        else:
+            predicted, predicted_low, predicted_high = regression_prediction_values(pred)
+            print(f"    Our regression prediction: ${predicted:.1f}M")
 
         # Fetch actual daily breakdown
         daily_actuals = fetch_opening_weekend_daily(movie, last_fri)
@@ -1085,6 +1145,7 @@ def auto_calibrate():
             "snapshot_daily_coverage_ratios": snapshot_daily_coverage_ratios,
             "snapshot_daily_lead_buckets": snapshot_daily_lead_buckets,
             "social_signal": pred.get("social_signal"),
+            "graded_only_reason": graded_only_reason,
         })
 
     entries = record_pending_calibrations(cal, prediction_cal, last_fri, pending)
@@ -1368,5 +1429,16 @@ if __name__ == "__main__":
         )
         outage_note = " [DATA OUTAGE - excluded from fits]" if pred.get("data_outage") else ""
         print(f"Recorded: {matched_movie} actual=${actual_val}M{outage_note}")
+    elif "--weekend" in args:
+        idx = args.index("--weekend")
+        try:
+            weekend = datetime.strptime(args[idx + 1], "%Y-%m-%d")
+        except (IndexError, ValueError):
+            print("Usage: --weekend YYYY-MM-DD (the opening Friday)")
+            sys.exit(1)
+        if weekend.weekday() != 4:
+            print(f"--weekend {args[idx + 1]} is not a Friday")
+            sys.exit(1)
+        auto_calibrate(weekend_of=args[idx + 1])
     else:
         auto_calibrate()

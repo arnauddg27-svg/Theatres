@@ -9281,6 +9281,131 @@
           "wikipedia"
         ]
       }
+    },
+    {
+      "movie": "I Play Rocky",
+      "weekend_of": "2026-11-20",
+      "date": "2026-11-28",
+      "predicted_mid": 9.39,
+      "predicted_low": 9.12,
+      "predicted_high": 9.89,
+      "actual_total": 9.35,
+      "daily_actuals": {
+        "Thursday": 0.02,
+        "Friday": 3.8,
+        "Saturday": 3.27,
+        "Sunday": 2.26
+      },
+      "daily_predictions": {},
+      "error_pct": 0.5,
+      "n_theatres": 0,
+      "n_days": 0,
+      "live_headline": {
+        "mid_m": 9.39,
+        "low_m": 9.12,
+        "high_m": 9.89,
+        "logged_at": "2026-11-23T10:47:53Z",
+        "source": "sunday-ratio",
+        "seat_days": "Friday+Saturday",
+        "rows": 30,
+        "checkpoints": {
+          "tuesday_noon_et": {
+            "mid_m": 5.1,
+            "logged_at": "2026-11-17T16:11:09Z",
+            "cutoff": "2026-11-17T17:00:00Z",
+            "source": "presale-only",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "presales",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 5.1,
+            "low_m": 1.49,
+            "high_m": 13.44,
+            "error_pct": -45.43,
+            "baseline_error_pct": -45.43,
+            "absolute_error_improvement_pp": 0.0,
+            "in_range": true
+          },
+          "thursday_noon_et": {
+            "mid_m": 6.41,
+            "logged_at": "2026-11-19T08:14:21Z",
+            "cutoff": "2026-11-19T17:00:00Z",
+            "source": "presale-only",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "presales",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 6.41,
+            "low_m": 1.87,
+            "high_m": 16.89,
+            "error_pct": -31.41,
+            "baseline_error_pct": -31.41,
+            "absolute_error_improvement_pp": 0.0,
+            "in_range": true
+          },
+          "friday_noon_et": {
+            "mid_m": 6.76,
+            "logged_at": "2026-11-20T16:41:01Z",
+            "cutoff": "2026-11-20T17:00:00Z",
+            "source": "presale-only",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "presales",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 6.76,
+            "low_m": 1.97,
+            "high_m": 17.82,
+            "error_pct": -27.66,
+            "baseline_error_pct": -27.66,
+            "absolute_error_improvement_pp": 0.0,
+            "in_range": true
+          },
+          "saturday_noon_et": {
+            "mid_m": 16.64,
+            "logged_at": "2026-11-21T16:56:42Z",
+            "cutoff": "2026-11-21T17:00:00Z",
+            "source": "seat-snapshot-regression",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "after-friday",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 16.64,
+            "low_m": 6.42,
+            "high_m": 43.13,
+            "error_pct": 78.06,
+            "baseline_error_pct": 78.06,
+            "absolute_error_improvement_pp": 0.0,
+            "in_range": true
+          },
+          "sunday_noon_et": {
+            "mid_m": 9.39,
+            "logged_at": "2026-11-22T16:57:40Z",
+            "cutoff": "2026-11-22T17:00:00Z",
+            "source": "sunday-ratio",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "after-saturday",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 14.3,
+            "low_m": 9.12,
+            "high_m": 9.89,
+            "error_pct": 0.48,
+            "baseline_error_pct": 53.02,
+            "absolute_error_improvement_pp": 52.54,
+            "in_range": true
+          }
+        }
+      },
+      "live_error_pct": 0.5,
+      "actual_source": "The Numbers auto-calibrate",
+      "actual_status": "final",
+      "daily_actuals_source": "https://www.the-numbers.com/movie/I-Play-Rocky-(2026)",
+      "non_preview_thursday": true,
+      "exclude_from_calibration": true,
+      "calibration_exclusion_reason": "Regular Thursday for a non-Friday opener; not preview revenue.",
+      "data_outage": true,
+      "data_outage_reason": "No AMC seat-count rows; graded on the live headline, not a fit input.",
+      "replay_unavailable": true
     }
   ],
   "calibration_factors": {
@@ -9698,30 +9823,30 @@
     "snapshot_calibration_support": {
       "days": {
         "Thursday": {
-          "n": 15,
-          "support": 12.481
+          "n": 13,
+          "support": 10.544
         },
         "Friday": {
-          "n": 16,
-          "support": 11.531
+          "n": 14,
+          "support": 9.587
         },
         "Saturday": {
-          "n": 20,
-          "support": 14.222
+          "n": 18,
+          "support": 12.273
         },
         "Sunday": {
-          "n": 20,
-          "support": 17.221
+          "n": 18,
+          "support": 15.259
         }
       },
       "leads": {
         "same_day": {
-          "n": 65,
-          "support": 52.3
+          "n": 59,
+          "support": 46.417
         },
         "next_day": {
-          "n": 4,
-          "support": 2.688
+          "n": 2,
+          "support": 0.779
         },
         "multi_day": {
           "n": 2,
