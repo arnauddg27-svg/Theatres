@@ -33,6 +33,8 @@ from collections import defaultdict
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import chain_census as CC  # noqa: E402
 import chain_forecast as CF  # noqa: E402
+import chain_pace  # noqa: E402
+import chain_presales  # noqa: E402
 import holdover  # noqa: E402
 
 STATES = (  # name, reported days, counted days
@@ -73,10 +75,18 @@ def main(argv=None):
     ap.add_argument("--prior", action="store_true", help="shares from earlier weekends only")
     ap.add_argument("--films", action="store_true")
     ap.add_argument("--no-groups", action="store_true", help="all-film day ratios only (no audience type)")
+    ap.add_argument("--no-pace", action="store_true", help="leave the pre-sales pace read of Friday out")
+    ap.add_argument("--set", action="append", default=[], metavar="NAME=VALUE",
+                    help="override a chain_forecast constant for this run, e.g. SATURDAY_CARRY_WEIGHT=0.8")
     ap.add_argument("--snapshots", help="CSV of market snapshots (movie, snapshot, implied_median_m, definition_match)")
     ap.add_argument("--cache", help="directory to keep the per-weekend chain dollars between runs")
     args = ap.parse_args(argv)
 
+    for item in args.set:
+        name, value = item.split("=", 1)
+        current = getattr(CF, name)
+        setattr(CF, name, tuple(v for v in value.split("+") if v) if isinstance(current, tuple)
+                else type(current)(value))
     with open(os.path.join(CF.DATA_DIR, "calibration.json")) as fh:
         hist = json.load(fh)["history"]
     midweek = {(e["weekend_of"], CC.movie_key(e["movie"])) for e in hist if e.get("non_preview_thursday")}
@@ -94,6 +104,7 @@ def main(argv=None):
                 pickle.dump(dollars[w], open(path, "wb"))
     samples = CC.share_samples(weekends, dollars, actuals)
     library = CF.load_library()
+    pace_table, openers = chain_pace.load_table(), set(chain_presales.load_actuals())
     metadata = CC.P.load_movie_metadata()
 
     with open(os.path.join(CF.DATA_DIR, "prediction-log.csv"), newline="") as fh:
@@ -111,6 +122,8 @@ def main(argv=None):
                     snaps[(CC.movie_key(r["movie"]), r["snapshot"])] = _f(r["implied_median_m"])
 
     res = defaultdict(list)          # label -> [(value, actual)]
+    reached = defaultdict(lambda: defaultdict(int))     # state -> evidence stage actually reached
+    paced = defaultdict(int)                            # state -> forecasts that had a pace read
     paired = defaultdict(list)       # state -> [(ours, market, actual)]
     per_film = []
     for w in weekends:
@@ -129,11 +142,19 @@ def main(argv=None):
             cells = {dates[d]: c for d, c in by_date.items() if d in dates}
             row = {}
             for name, rep_days, seat_days in STATES:
+                pace = None
+                if not args.no_pace and "Friday" not in rep_days and a.get("Thursday"):
+                    pace = chain_pace.friday_estimate(
+                        movie, w, a["Thursday"], pace_table, actuals, openers,
+                        exclude_weekends={x for x in weekends if x >= w} if args.prior else {w})
                 fc = CF.weekend_forecast({d: a[d] for d in rep_days if d in a},
-                                         {d: cells[d] for d in seat_days if d in cells}, shares, ratios)
+                                         {d: cells[d] for d in seat_days if d in cells}, shares, ratios,
+                                         pace_friday=pace)
+                paced[name] += bool(pace)
                 if not fc:
                     continue
                 res[name].append((fc["mid_m"], total))
+                reached[name][fc["stage"]] += 1
                 row[name] = (fc["mid_m"], fc["stage"])
                 lv = live.get((w, mk), {}).get(LIVE_STAGE[name])
                 if lv and lv[0]:
@@ -146,7 +167,8 @@ def main(argv=None):
     print(f"openings {args.since}..{args.until}, shares from {'earlier' if args.prior else 'the other'} weekends, "
           f"pool {'+'.join(CF.POOL)} (no AMC)\n")
     for name, *_ in STATES:
-        print(line(name, res[name]))
+        print(line(name, res[name]) + "  [" + ", ".join(f"{k} {v}" for k, v in sorted(reached[name].items()))
+              + (f"; pace read {paced[name]}" if paced[name] else "") + "]")
         print(line(f"  live headline at {LIVE_STAGE[name]}", res[f"  live headline at {LIVE_STAGE[name]} | {name}"]))
         rows = paired[name]
         if rows:

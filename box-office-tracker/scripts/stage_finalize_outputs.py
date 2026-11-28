@@ -31,6 +31,8 @@ OUTPUT_FILES = [
     # The other chains' pre-sales per film and cutoff (chain_presales.py,
     # appended by ensemble_forecast.py).
     "box-office-tracker/data/chain-presale-features.csv",
+    # Friday pre-sales pace per film and chain (chain_pace.py, appended by predict.py).
+    "box-office-tracker/data/chain-pace.csv",
     "box-office-tracker/data/paper-trades.csv",
     "box-office-tracker/data/bracket-probabilities.csv",
     "box-office-tracker/data/chain-census-log.csv",

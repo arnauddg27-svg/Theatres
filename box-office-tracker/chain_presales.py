@@ -161,6 +161,17 @@ def lane_features(weekend_of, cutoff_names=None, data_dir=None, archives=False, 
     return out
 
 
+def load_aliases(weekend_of, path=None):
+    """{alias key: tracked title key} for one weekend (data/title-aliases.json)."""
+    try:
+        with open(path or os.path.join(DATA_DIR, "title-aliases.json")) as fh:
+            films = (json.load(fh) or {}).get(weekend_of) or {}
+    except (OSError, ValueError):
+        return {}
+    return {movie_key(name): movie_key(movie) for movie, names in films.items() if isinstance(names, list)
+            for name in names}
+
+
 def load_table(path=None):
     path = path or FEATURES_CSV
     if not os.path.exists(path):
@@ -181,6 +192,7 @@ def update_table(weekend_of, now=None, national=None, path=None, data_dir=None, 
     if not due:
         return 0
     rows = []
+    aliases = load_aliases(weekend_of) if aliases is None else aliases
     for (mk, chain, name), feat in lane_features(weekend_of, due, data_dir=data_dir, aliases=aliases).items():
         if (weekend_of, mk, chain, name) in have or feat["theatres"] < 1:
             continue

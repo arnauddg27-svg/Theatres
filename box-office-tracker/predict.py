@@ -5769,6 +5769,10 @@ def chain_evidence_forecast(pred, cal, reported):
     the census overlay, so calibration replays stay raw."""
     if CHAIN_FORECAST_MODE not in ("outage", "always") or _CHAIN_CENSUS_DATA is None:
         return None
+    if (pred.get("midweek_opening") or {}).get("run"):
+        # A film that opened before Friday has its own lane; without a
+        # projection there, its full Thursday must not be read as previews here.
+        return None
     if CHAIN_FORECAST_MODE == "outage":
         played = amc_played_day_coverage(pred.get("daily_details"))
         if played is not None and played >= CHAIN_FORECAST_MAX_AMC_COVERAGE:
@@ -11956,6 +11960,16 @@ def main():
         movie for movie in prediction_movie_names(seat_data, snapshot_data)
         if not movie_filter or movie_filter in movie.lower()
     ]
+    if not through_date and replay_weekend and CHAIN_FORECAST_MODE in ("outage", "always"):
+        # Friday pre-sales pace per film and chain (chain_pace.py): recorded
+        # once, by the first live run after Friday 10:00 UTC.
+        try:
+            import chain_pace as _pace
+            added = _pace.update_table(replay_weekend)
+            if added:
+                print(f"  chain pace: {added} row(s) recorded for {replay_weekend}")
+        except Exception as exc:
+            print(f"  (chain pace not recorded: {type(exc).__name__}: {exc})")
     chain_census_data = None
     if CHAIN_CENSUS_MODE == "on" and replay_weekend:
         try:

@@ -51,7 +51,8 @@ class WeekendForecastTest(unittest.TestCase):
         self.assertEqual(note, "CNMK+ALMO+HARK")
         fc = CF.weekend_forecast({"Thursday": 1.0, "Friday": 5.0}, by_day, SHARES, RATIOS)
         self.assertEqual(fc["stage"], "saturday-seats")
-        self.assertAlmostEqual(fc["days"]["Saturday"]["value_m"], math.sqrt(7.0 * 5.0 * 1.2), places=6)
+        w = CF.SATURDAY_CARRY_WEIGHT
+        self.assertAlmostEqual(fc["days"]["Saturday"]["value_m"], 7.0 ** w * (5.0 * 1.2) ** (1 - w), places=6)
 
     def test_a_lane_gap_on_the_reference_day_drops_the_carry(self):
         # 2026-11-06: Friday's reads were lost, so Friday counted 30% of its
@@ -149,3 +150,52 @@ class HeadlineGateTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class AuditFixesTest(unittest.TestCase):
+    """2026-11-28 audit of the first version."""
+
+    def test_a_day_still_in_progress_is_not_a_counted_day(self):
+        from datetime import datetime, timezone
+        # Saturday 22:30Z: Friday is complete, Saturday holds only its matinees.
+        self.assertEqual(CF.last_complete_date(datetime(2026, 12, 5, 22, 30, tzinfo=timezone.utc)), "2026-12-04")
+        # Sunday 09:59Z: the last West-coast shows are not read yet; 10:00Z they are.
+        self.assertEqual(CF.last_complete_date(datetime(2026, 12, 6, 9, 59, tzinfo=timezone.utc)), "2026-12-04")
+        self.assertEqual(CF.last_complete_date(datetime(2026, 12, 6, 10, 0, tzinfo=timezone.utc)), "2026-12-05")
+
+    def test_for_movie_drops_the_in_progress_day(self):
+        from datetime import datetime, timezone
+        chain_data = {"Film A": {"2026-12-04": cells(5.0), "2026-12-05": cells(7.0)}}
+        with mock.patch.object(CF.CC, "shares_for", return_value=SHARES), \
+                mock.patch.object(CF.CC, "regal_pool_ok", return_value=False), \
+                mock.patch.object(CF, "shape_ratios", return_value=RATIOS), \
+                mock.patch.object(CF, "pace_for_movie", return_value=None):
+            live = CF.for_movie("Film A", "2026-12-04", {"Thursday": 1.0, "Friday": 5.0}, chain_data=chain_data,
+                                now=datetime(2026, 12, 5, 22, 30, tzinfo=timezone.utc))
+            later = CF.for_movie("Film A", "2026-12-04", {"Thursday": 1.0, "Friday": 5.0}, chain_data=chain_data,
+                                 now=datetime(2026, 12, 6, 11, 0, tzinfo=timezone.utc))
+        self.assertEqual(live["stage"], "friday-reported")
+        self.assertAlmostEqual(live["days"]["Saturday"]["value_m"], 6.0)
+        self.assertEqual(later["stage"], "saturday-seats")
+
+    def test_a_carry_needs_most_of_the_days_showings(self):
+        by_day = {"Friday": cells(5.0), "Saturday": {c: dict(v, showings=100) for c, v in cells(7.0).items()}}
+        est, note = CF.carried(by_day, SHARES, "Saturday", "Friday", 5.0)        # 100 of 200 showings read
+        self.assertIsNone(est)
+
+    def test_pace_read_joins_the_friday_average_only_with_reported_previews(self):
+        pace = {"friday_m": 3.0, "chains": "CNMK+HARK"}
+        fc = CF.weekend_forecast({"Thursday": 2.0}, {}, SHARES, RATIOS, pace_friday=pace)
+        self.assertAlmostEqual(fc["days"]["Friday"]["value_m"], math.sqrt(4.8 * 3.0), places=6)
+        self.assertIn("pre-sales pace CNMK+HARK", fc["days"]["Friday"]["how"])
+        with_seats = CF.weekend_forecast({"Thursday": 2.0}, {"Friday": cells(6.0)}, SHARES, RATIOS, pace_friday=pace)
+        self.assertAlmostEqual(with_seats["days"]["Friday"]["value_m"], (6.0 * 4.8 * 3.0) ** (1 / 3), places=6)
+        reported = CF.weekend_forecast({"Thursday": 2.0, "Friday": 5.0}, {}, SHARES, RATIOS, pace_friday=pace)
+        self.assertEqual(reported["days"]["Friday"]["value_m"], 5.0)
+
+    def test_a_pre_friday_opener_never_takes_the_chain_headline(self):
+        pred = {"movie": "X", "weekend_of": "2026-11-27", "midweek_opening": {"run": {"opening_date": "2026-11-25"}},
+                "daily_details": HeadlineGateTest.DETAILS_DARK}
+        with mock.patch.object(P, "_CHAIN_CENSUS_DATA", {}), mock.patch.object(CF, "for_movie") as call:
+            self.assertIsNone(P.chain_evidence_forecast(pred, {}, {"Thursday": 7.7}))
+        call.assert_not_called()

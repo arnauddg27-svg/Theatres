@@ -30,7 +30,7 @@ PATHS=(
   calibration.json calibration-freezes
   movie-metadata.csv reviews.csv social-signals.csv polymarket-markets.csv
   daily-actual-overrides.csv midweek-opening-dailies.csv historical-comps.csv theatre-counts.json
-  chain-presale-features.csv trade-forecasts.csv
+  chain-presale-features.csv chain-pace.csv trade-forecasts.csv
   theatres-all.json theatres-expansion.json showtime-links.json
 )
 

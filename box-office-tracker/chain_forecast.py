@@ -12,6 +12,9 @@ What this does, per day of the weekend, with the best evidence available:
     played, not yet reported    -> the chains' counted seats
     not played yet              -> the day shape of earlier openings
 
+and, for a Friday whose previews are reported, the film's own pre-sales pace
+at those chains (chain_pace.py), averaged with the other Friday reads.
+
 Seat counts are used two ways. Where the day before is already reported, the
 count is carried: reported(day-1) x pooled(day) / pooled(day-1) over the same
 chains, which cancels the film's own chain mix. That carry is only trusted
@@ -33,6 +36,8 @@ import math
 import os
 import statistics
 
+from datetime import datetime, timedelta, timezone
+
 import chain_census as CC
 
 DATA_DIR = CC.DATA_DIR
@@ -44,6 +49,23 @@ POOL = ("CNMK", "ALMO", "HARK")
 CONSISTENCY = (0.6, 1.6)
 # A carried day further than this from the day-shape ratio is a data gap, not a film.
 CARRY_VS_SHAPE = (0.5, 2.0)
+# Log-weight of the carried seat read against the day-shape read on Saturday.
+# Swept 2026-11-28 (0.5 / 0.67 / 0.8 / 1.0): 7.4 / 7.1 / 7.0 / 7.0% over all
+# 26 films, and seats alone beat the even blend on the 13 films that have the
+# carry (3.4% against 3.9%). Friday's reads are averaged with equal weights
+# (0.3 / 0.5 / 0.7 / 1.0 on the seat read: flat within half a point).
+SATURDAY_CARRY_WEIGHT = 0.75
+CARRY_POOL_EXTRA = ()
+# A chain's count of the day being carried must hold at least this share of
+# the showings it counted the day before: a lane that missed part of the day
+# reads low without failing the reference-day test. Saturday and Sunday list
+# as many showings as the day before (The Hunger Games: 6,495 / 6,524).
+MIN_TARGET_SHOWINGS = 0.85
+# A show date counts as played once the last West-coast show has started and
+# been read: 10:00 UTC the next morning. Before that the post-show lanes hold
+# only the showings that already ended (matinees at 22:30Z), which the pooled
+# estimate would read as the whole day.
+DAY_COMPLETE_UTC_HOUR = 10
 # Alamo and Harkins together sell about 3% of US tickets: too thin to stand
 # for the country on their own (Cinemark alone is about 13%).
 MIN_POOLED_SHARE = 0.08
@@ -54,10 +76,10 @@ GROUP_SHRINK_K = 10
 # Evidence stage -> log-sd of (forecast / actual) in the backtest, n in the
 # comment. Used for the band only; refit with scripts/chain_forecast_backtest.py.
 STAGE_SIGMA = {
-    "previews-reported": 0.27,     # n=24, mean miss 21% (live AMC-era headline 24%)
-    "friday-seats": 0.25,          # n=24, mean miss 18%
+    "previews-reported": 0.25,     # n=24, mean miss 18.5% (live AMC-era headline 24%)
+    "friday-seats": 0.24,          # n=24, mean miss 17%
     "friday-reported": 0.11,       # n=26, mean miss 8% (live 10%)
-    "saturday-seats": 0.11,        # n=26, mean miss 7%
+    "saturday-seats": 0.10,        # n=26, mean miss 7%
     "saturday-reported": 0.05,     # n=26, mean miss 3% (live 4%)
     "sunday-seats": 0.045,         # n=26, mean miss 2%
 }
@@ -164,7 +186,9 @@ def carried(cells_by_day, shares, day, prev, prev_reported, pool=POOL):
     """reported(prev) x pooled(day) / pooled(prev) over the chains counted on
     both days, or (None, reason) when the counts cannot be trusted."""
     a, b = cells_by_day.get(day) or {}, cells_by_day.get(prev) or {}
-    chains = [c for c in _usable(a, day, shares, pool) if c in _usable(b, prev, shares, pool)]
+    pool = tuple(pool) + tuple(c for c in CARRY_POOL_EXTRA if c not in pool)
+    chains = [c for c in _usable(a, day, shares, pool) if c in _usable(b, prev, shares, pool)
+              and a[c].get("showings", 0) >= MIN_TARGET_SHOWINGS * b[c].get("showings", 0)]
     if not chains or not prev_reported or prev_reported <= 0:
         return None, "no chain counted on both days"
     now, _ = pooled(a, day, shares, chains=chains)
@@ -179,12 +203,14 @@ def carried(cells_by_day, shares, day, prev, prev_reported, pool=POOL):
 
 
 # ─── The forecast ───────────────────────────────────────────────────────────
-def weekend_forecast(reported, cells_by_day, shares, ratios, pool=POOL):
+def weekend_forecast(reported, cells_by_day, shares, ratios, pool=POOL, pace_friday=None):
     """{mid_m, low_m, high_m, stage, days, basis} or None when no day is
     reported or counted (pre-release: not this module's stage).
 
     reported: {day: $M}; a Friday reported without a Thursday row holds its
-    previews. cells_by_day: {day: {chain: cell}} from chain_census."""
+    previews. cells_by_day: {day: {chain: cell}} from chain_census.
+    pace_friday: chain_pace.friday_estimate() -- Friday from the film's own
+    pre-sales pace, averaged with the other Friday reads."""
     reported = {d: v for d, v in ((d, _f((reported or {}).get(d))) for d in DAYS) if v is not None and v >= 0}
     cells_by_day = cells_by_day or {}
     shares = shares or {}
@@ -227,7 +253,10 @@ def weekend_forecast(reported, cells_by_day, shares, ratios, pool=POOL):
             candidates.append(previews * ratios["fri_per_previews"])
             how.append(f"previews x{ratios['fri_per_previews']:.2f}")
             stage = stage or "previews-reported"
-        friday = _geo(candidates)
+        if pace_friday and pace_friday.get("friday_m") and reported.get("Thursday"):
+            candidates.append(pace_friday["friday_m"])
+            how.append(f"pre-sales pace {pace_friday.get('chains', '')}")
+        friday = _geo(candidates)             # equal log-weights (swept: flat)
         if not friday:
             return None
         days["Friday"] = (friday, " and ".join(how))
@@ -243,7 +272,8 @@ def weekend_forecast(reported, cells_by_day, shares, ratios, pool=POOL):
         if "Friday" in reported:
             est, note = carried(cells_by_day, shares, "Saturday", "Friday", reported["Friday"], pool)
             if est and CARRY_VS_SHAPE[0] <= est / shape_sat <= CARRY_VS_SHAPE[1]:
-                value = math.sqrt(est * shape_sat)
+                value = math.exp(SATURDAY_CARRY_WEIGHT * math.log(est)
+                                 + (1 - SATURDAY_CARRY_WEIGHT) * math.log(shape_sat))
                 how = f"seats {note} carried from Friday, averaged with {how}"
                 stage = "saturday-seats"
         elif seats["Saturday"][0] and stage == "friday-seats":
@@ -288,13 +318,45 @@ def cells_for_movie(movie, weekend_of, chain_data=None, through_date=None):
             if date in dates and not (through_date and date > through_date)}
 
 
+def last_complete_date(now=None):
+    """Latest show date whose seat counts are final (see DAY_COMPLETE_UTC_HOUR)."""
+    now = now or datetime.now(timezone.utc)
+    return (now - timedelta(hours=DAY_COMPLETE_UTC_HOUR) - timedelta(days=1)).date().isoformat()
+
+
 def for_movie(movie, weekend_of, reported, chain_data=None, through_date=None, library=None,
-              audience_type=None):
-    """Live entry point: shares from weekends strictly before this one."""
+              audience_type=None, now=None):
+    """Live entry point: shares from weekends strictly before this one. Seat
+    counts of a day still in progress are left out (a dated replay passes
+    `through_date` and keeps every date up to it)."""
     if not weekend_of or weekend_of < CC.CENSUS_FROM:
         return None
+    through_date = through_date or last_complete_date(now)
     ratios = shape_ratios(weekend_of, library, audience_type)
     cells = cells_for_movie(movie, weekend_of, chain_data, through_date)
     shares = CC.shares_for(weekend_of, exclude_movie=movie) if cells else {}
     pool = POOL + (("REGL",) if cells and CC.regal_pool_ok(weekend_of) else ())
-    return weekend_forecast(reported, cells, shares, ratios, pool=pool)
+    return weekend_forecast(reported, cells, shares, ratios, pool=pool,
+                            pace_friday=pace_for_movie(movie, weekend_of, reported))
+
+
+_PACE_CACHE = {}
+
+
+def pace_for_movie(movie, weekend_of, reported):
+    """chain_pace.friday_estimate() for a film whose previews are reported and
+    whose Friday is not, or None. Never raises: the pace read is an extra."""
+    reported = reported or {}
+    previews = _f(reported.get("Thursday"))
+    if not previews or _f(reported.get("Friday")) is not None:
+        return None
+    try:
+        import chain_pace
+        import chain_presales
+        if "inputs" not in _PACE_CACHE:
+            _PACE_CACHE["inputs"] = (chain_pace.load_table(), CC.reported_daily(),
+                                     set(chain_presales.load_actuals()))
+        table, history, openers = _PACE_CACHE["inputs"]
+        return chain_pace.friday_estimate(movie, weekend_of, previews, table, history, openers)
+    except Exception:
+        return None
