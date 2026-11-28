@@ -5763,6 +5763,17 @@ CHAIN_FORECAST_MODE = (os.environ.get("CHAIN_FORECAST_MODE") or "outage").strip(
 CHAIN_FORECAST_MAX_AMC_COVERAGE = float(os.environ.get("CHAIN_FORECAST_MAX_AMC_COVERAGE") or 0.10)
 
 
+def amc_not_read(daily_details):
+    """True when AMC read under CHAIN_FORECAST_MAX_AMC_COVERAGE of its theatres
+    on the days that have a row. Such a forecast is an outage forecast whatever
+    the weighted-coverage test says: on 2026-11-21 that test stayed off with
+    AMC at 0 of 425 theatres (a few bridge reads kept quality and snapshot
+    weight over its floors), so Tuesday's calibration replay would have fitted
+    its factors on a seat regression of a dozen theatres."""
+    played = amc_played_day_coverage(daily_details)
+    return played is not None and played < CHAIN_FORECAST_MAX_AMC_COVERAGE
+
+
 def chain_evidence_forecast(pred, cal, reported):
     """chain_forecast.for_movie() result when it should replace the headline,
     else None. Needs the caller's chain data (main / the stage harnesses), like
@@ -5773,10 +5784,8 @@ def chain_evidence_forecast(pred, cal, reported):
         # A film that opened before Friday has its own lane; without a
         # projection there, its full Thursday must not be read as previews here.
         return None
-    if CHAIN_FORECAST_MODE == "outage":
-        played = amc_played_day_coverage(pred.get("daily_details"))
-        if played is not None and played >= CHAIN_FORECAST_MAX_AMC_COVERAGE:
-            return None
+    if CHAIN_FORECAST_MODE == "outage" and pred.get("daily_details") and not amc_not_read(pred["daily_details"]):
+        return None
     try:
         import chain_census as _cc
         import chain_forecast as _cf
@@ -10096,7 +10105,7 @@ def _predict_movie_inner(movie, seat_data, poly_data, cal, verbose=False,
         result["snapshot_effective_model_weight"] = round(
             weight * (profile.get("snapshot_weight_multiplier") or 1.0), 4)
     result["seat_panel_coverage_ratio"] = seat_panel_coverage_ratio(result.get("daily_details"), cal)
-    result["data_outage"] = detect_data_outage(result)
+    result["data_outage"] = detect_data_outage(result) or amc_not_read(result.get("daily_details"))
     result.update(window_profile(
         movie, weekend_of, poly_data,
         early_opening=opened_before_friday(movie, weekend_of, daily_actual_overrides)))

@@ -127,6 +127,11 @@ class HeadlineGateTest(unittest.TestCase):
                 mock.patch.object(CF, "for_movie", return_value=fake) as call:
             return P.chain_evidence_forecast(pred, {}, {"Friday": 3.8}), call, pred
 
+    def test_amc_not_read_marks_the_forecast_as_an_outage(self):
+        self.assertTrue(P.amc_not_read(self.DETAILS_DARK))
+        self.assertFalse(P.amc_not_read(self.DETAILS_OK))
+        self.assertFalse(P.amc_not_read({}))            # before release: nothing played, nothing to judge
+
     def test_engages_when_amc_is_dark(self):
         out, call, pred = self._call(self.DETAILS_DARK, data={})
         self.assertEqual(out["mid_m"], 10.0)
