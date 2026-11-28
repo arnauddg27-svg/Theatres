@@ -31,9 +31,23 @@ def number(value):
         return None
 
 
+def weekend_reported(days):
+    """True once Friday, Saturday and Sunday all carry a REPORTED gross.
+
+    Thursday is not required. The daily-actuals fetcher records a preview row
+    only when The Numbers publishes one and otherwise leaves any previews
+    inside Friday (no-preview openers; previews folded into opening day), so
+    Friday+Saturday+Sunday is the whole weekend either way. 2026-11-20: I Play
+    Rocky had those three days reported ($9.33M) and no Thursday row, stayed
+    "after-sunday" and showed the seat regression's $13.5M.
+    """
+    days = days or {}
+    return all((days.get(d) or {}).get("actual_override") for d in OPENING_DAYS[1:])
+
+
 def forecast_stage(pred):
     days = pred.get("daily_details") or {}
-    if set(OPENING_DAYS).issubset(days):
+    if set(OPENING_DAYS).issubset(days) or weekend_reported(days):
         return "complete"
     for day, stage in (("Sunday", "after-sunday"), ("Saturday", "after-saturday"),
                        ("Friday", "after-friday"), ("Thursday", "after-previews")):
@@ -49,7 +63,8 @@ def daily_evidence_candidate(pred):
     forecasts, or override completed weekends. All values remain in $millions.
     """
     observed = set(pred.get("daily_details") or {}) & set(OPENING_DAYS)
-    if not observed or len(observed) == len(OPENING_DAYS):
+    if (not observed or len(observed) == len(OPENING_DAYS)
+            or weekend_reported(pred.get("daily_details"))):
         return None
     mid = number(pred.get("snapshot_mid_m"))
     low = number(pred.get("snapshot_low_m"))

@@ -53,6 +53,33 @@ class EvidenceIntegrityTests(unittest.TestCase):
         P.select_regression_prediction(pred)
         self.assertTrue(pred["forecast_provisional"])
 
+    def test_weekend_without_a_preview_figure_closes_at_the_reported_total(self):
+        # 2026-11-20 I Play Rocky: Friday 3.8 + Saturday 3.25 + Sunday 2.28
+        # reported, no Thursday row. It stayed "after-sunday" with the seat
+        # regression's $13.5M headline over a $9.33M reported weekend.
+        reported = {"Friday": 3.8, "Saturday": 3.25, "Sunday": 2.28}
+        pred = {"movie": "X", "seat_mid_m": 13.5, "seat_low_m": 7.4, "seat_high_m": 31.4,
+                "review_weekend_factor": 1.1,
+                "daily_details": {d: {"domestic_mid": g * 1e6, "actual_override": True}
+                                  for d, g in reported.items()}}
+        P.select_regression_prediction(pred)
+        for key in ("regression_mid_m", "regression_low_m", "regression_high_m"):
+            self.assertAlmostEqual(9.33, pred[key])
+        self.assertEqual("reported-actuals", pred["regression_source"])
+        self.assertEqual("complete", pred["forecast_stage"])
+        self.assertEqual("complete", P.forecast_stage(pred))
+        # Previews the source never split out are inside Friday: a seat-implied
+        # Thursday is not added on top of the reported three days.
+        pred["daily_details"]["Thursday"] = {"domestic_mid": 2_000_000, "actual_override": False}
+        P.select_regression_prediction(pred)
+        self.assertAlmostEqual(9.33, pred["regression_mid_m"])
+        # Sunday still seat-implied: the weekend is not closed.
+        pred["daily_details"].pop("Thursday")
+        pred["daily_details"]["Sunday"]["actual_override"] = False
+        P.select_regression_prediction(pred)
+        self.assertNotEqual("reported-actuals", pred["regression_source"])
+        self.assertEqual("after-sunday", pred["forecast_stage"])
+
     def test_forecast_cannot_fall_below_already_reported_revenue(self):
         pred = {"movie": "X", "seat_mid_m": 5, "seat_low_m": 3, "seat_high_m": 8,
                 "daily_details": {"Thursday": {"domestic_mid": 10_000_000, "actual_override": True}}}

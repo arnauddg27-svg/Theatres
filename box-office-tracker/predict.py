@@ -35,7 +35,7 @@ import holdover
 import small_film_gate
 from actuals_quality import independent_daily_actuals, independent_daily_override
 from forecast_evaluation import select_forecast_checkpoints, utc_timestamp
-from stage_forecasting import daily_evidence_candidate, forecast_stage
+from stage_forecasting import daily_evidence_candidate, forecast_stage, weekend_reported
 from dataclasses import replace
 from datetime import datetime, timedelta, timezone
 from math import exp, log, sqrt
@@ -5858,12 +5858,19 @@ def select_regression_prediction(pred, cal=None, *, apply_stage_model=True):
     reported = {d: _detail_mid_m(v) for d, v in (pred.get("daily_details") or {}).items()
                 if d in OPENING_WEEKEND_DAYS and v.get("actual_override")}
     reported_total = sum(reported.values())
-    if set(OPENING_WEEKEND_DAYS).issubset(reported):
-        # Once every day is reported there is no remaining weekend to forecast.
-        # Regression, reviews and uncertainty floors cannot change that outcome.
+    if weekend_reported(pred.get("daily_details")):
+        # Once Friday-Sunday are reported there is no remaining weekend to
+        # forecast. Regression, reviews and uncertainty floors cannot change
+        # that outcome. A missing Thursday row is not a missing day: previews
+        # the source never split out are already inside Friday (see
+        # stage_forecasting.weekend_reported), and a seat-implied Thursday is
+        # not added on top of them.
         mid = low = high = reported_total
         source = "reported-actuals"
-        basis = "All four opening days reported; total counts previews once"
+        basis = ("All four opening days reported; total counts previews once"
+                 if "Thursday" in reported else
+                 "Friday-Sunday reported, no separate preview figure; any previews are inside Friday")
+        pred["forecast_stage"] = "complete"
         pred["forecast_provisional"] = any(
             v.get("actual_override_status") == "provisional"
             for v in (pred.get("daily_details") or {}).values())
