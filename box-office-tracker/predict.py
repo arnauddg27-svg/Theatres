@@ -24,7 +24,8 @@ Usage:
 
 import glob
 import theatre_weights
-from forecast_windows import window_profile
+from forecast_windows import market_frame, window_profile
+import midweek_opening
 import gzip
 import json, csv, os, sys, re, statistics
 import contextlib
@@ -3346,9 +3347,35 @@ DATA_OUTAGE_MAX_SEAT_QUALITY = 0.25
 DATA_OUTAGE_MAX_SNAPSHOT_WEIGHT = 0.15
 
 
+def seat_panel_coverage_ratio(daily_details, cal):
+    """Weekend coverage counting only theatres actually read.
+
+    A reported daily gross sets its day's coverage to 100% -- right for the
+    forecast (the day is known), wrong as a health reading of the seat panel.
+    2026-11-27, AMC dark since 11-19: 4 to 24 of 425 theatres read on
+    Thursday, yet the reported Thursday gross lifted weighted coverage to 13%,
+    over the 5% outage floor, and data_outage stayed blank. Here a reported
+    day counts at theatres read / theatres expected."""
+    if not daily_details:
+        return None
+    coverages = {}
+    for day, details in daily_details.items():
+        if details.get("actual_override"):
+            expected = _positive_float(details.get("expected_theatres"))
+            read = 0.0 if details.get("reported_actual_without_seat_rows") else (
+                _positive_float(details.get("n_theatres")) or 0.0)
+            coverages[day] = _clamp(read / expected, 0.0, 1.0) if expected else 0.0
+        else:
+            coverages[day] = details.get("effective_coverage_ratio", details.get("coverage_ratio"))
+    return weighted_weekend_coverage_ratio(coverages, cal)
+
+
 def detect_data_outage(pred):
     """True when the seat AND snapshot layers are both too starved to measure."""
     coverage = _coverage_value(pred.get("seat_weighted_coverage_ratio"), default=1.0)
+    panel = pred.get("seat_panel_coverage_ratio")
+    if panel is not None:
+        coverage = min(coverage, _coverage_value(panel, default=1.0))
     quality = _coverage_value(pred.get("seat_data_quality"), default=1.0)
     if coverage > DATA_OUTAGE_MAX_SEAT_COVERAGE or quality > DATA_OUTAGE_MAX_SEAT_QUALITY:
         return False
@@ -5325,6 +5352,10 @@ def class_opening_multiplier(cal, audience_type, basis, exclude=None, weekend_of
 
 def comp_multiplier_estimate(cal, pred):
     """Weekend estimate from the reported days x class multiplier, or None."""
+    if pred.get("midweek_opening"):
+        # The film opened before Friday: its Thursday is a full day, not
+        # previews, and the class multipliers are weekend / previews.
+        return None
     details = pred.get("daily_details") or {}
     reported = {d: _detail_mid_m(v) for d, v in details.items()
                 if d in OPENING_WEEKEND_DAYS and v.get("actual_override")}
@@ -5384,10 +5415,15 @@ def _graded_live_ratios(cal):
                     latest[k] = mid
     except OSError:
         pass
+    # Films that opened before Friday were logged "after-previews" until
+    # 2026-11-28 (their Thursday is a full day): never grade those rows as
+    # previews calls.
+    midweek = {(e.get("weekend_of"), _movie_lookup_key(e.get("movie", "")))
+               for e in (cal or {}).get("history", []) or [] if e.get("non_preview_thursday")}
     out = {}
     for (w, mk, stage), mid in latest.items():
         a = actual.get((w, mk))
-        if a:
+        if a and not (stage == "after-previews" and (w, mk) in midweek):
             out.setdefault(stage, []).append((mk, w, a / mid))
     _STAGE_BAND_CACHE[key] = out
     return out
@@ -5858,13 +5894,22 @@ def select_regression_prediction(pred, cal=None, *, apply_stage_model=True):
     reported = {d: _detail_mid_m(v) for d, v in (pred.get("daily_details") or {}).items()
                 if d in OPENING_WEEKEND_DAYS and v.get("actual_override")}
     reported_total = sum(reported.values())
-    if weekend_reported(pred.get("daily_details")):
+    midweek_total = midweek_reported_days_forecast(pred)
+    if midweek_total:
+        # The film opened before Friday: the days already reported are
+        # actuals and the rest of the run follows the day shape of earlier
+        # openings in the same frame (midweek_opening.py). Seat regression,
+        # previews multiplier, reviews and census overlay do not apply.
+        mid, low, high, basis = midweek_total
+        source = "midweek-reported-days"
+    elif weekend_reported(pred.get("daily_details")):
         # Once Friday-Sunday are reported there is no remaining weekend to
         # forecast. Regression, reviews and uncertainty floors cannot change
         # that outcome. A missing Thursday row is not a missing day: previews
         # the source never split out are already inside Friday (see
         # stage_forecasting.weekend_reported), and a seat-implied Thursday is
-        # not added on top of them.
+        # not added on top of them (2026-11-06 Drummer Boy: seat Thursday,
+        # no reported Thursday, $10.41M shown against $9.42M reported = actual).
         mid = low = high = reported_total
         source = "reported-actuals"
         basis = ("All four opening days reported; total counts previews once"
@@ -5924,6 +5969,97 @@ def select_regression_prediction(pred, cal=None, *, apply_stage_model=True):
     pred["model_forecast_uses_polymarket"] = False
     pred["forecast_feature_importance"] = forecast_feature_importance(pred)
     return pred
+
+
+MIDWEEK_OPENING_MODE = (os.environ.get("MIDWEEK_OPENING_MODE") or "on").strip().lower()
+
+
+def attach_midweek_opening(pred, movie, weekend_of, opening_week_data, markets=()):
+    """Record a pre-Friday opening and the projection of its remaining days.
+
+    Sets pred["midweek_opening"] = {run, projection, market_frame[, stage]}
+    when The Numbers lists a regular (non-preview) day before Friday for this
+    film. "stage" is present only when enough earlier openings exist to
+    project the remaining days; the headline then comes from
+    midweek_reported_days_forecast."""
+    if MIDWEEK_OPENING_MODE != "on" or not opening_week_data or not weekend_of:
+        return None
+    days = midweek_opening.film_days(opening_week_data, movie, weekend_of)
+    if not days:
+        return None
+    frame = market_frame(movie, weekend_of, markets)
+    run = midweek_opening.opening_run(days, weekend_of, known_opening=frame[0] if frame else None)
+    if not run:
+        return None
+    comps = midweek_opening.complete_runs(
+        opening_week_data, before_weekend=weekend_of, exclude=(weekend_of, movie))
+    projection = midweek_opening.project(run, comps)
+    info = {"run": run, "projection": projection, "market_frame": frame}
+    dates = opening_weekend_dates_by_day(weekend_of)
+    thu_sun = (midweek_opening.frame_total(run, projection, dates["Thursday"], dates["Sunday"])
+               if projection and dates else None)
+    if thu_sun:
+        info["thursday_sunday_m"] = thu_sun
+        info["stage"] = midweek_opening.stage_name(run)
+    pred["midweek_opening"] = info
+    return info
+
+
+def midweek_reported_days_forecast(pred):
+    """(mid, low, high, basis) for Thursday-Sunday from reported days plus the
+    projected remainder, or None when the film is not a projected pre-Friday
+    opening."""
+    info = pred.get("midweek_opening") or {}
+    run, projection = info.get("run"), info.get("projection")
+    if not run or not projection or not info.get("stage") or not info.get("thursday_sunday_m"):
+        return None
+    mid, low, high = info["thursday_sunday_m"]
+    first, last = run["reported_dates"][0], run["reported_dates"][-1]
+    weekday = lambda d: datetime.strptime(d, "%Y-%m-%d").strftime("%a")
+    span = weekday(first) if first == last else f"{weekday(first)}-{weekday(last)}"
+    ratios = (f"last day x{projection['r_last']:.2f} and to-date x{projection['r_cum']:.2f}"
+              if projection.get("r_last") else f"to-date x{projection['r_cum']:.2f}")
+    basis = (f"opened {weekday(run['opening_date'])} {run['opening_date']}: {span} reported "
+             f"${run['to_date_m']:.1f}M are actuals, not previews; remaining {len(run['remaining_dates'])} "
+             f"day(s) ${projection['remaining_m']:.1f}M = {ratios} "
+             f"({projection['n_comps']} {projection['pool']} openings")
+    if projection.get("loo_mae") is not None:
+        basis += f", leave-one-out miss {projection['loo_mae']:.0%}"
+    basis += ")"
+    if not run["last_is_single_day"]:
+        basis += ("; no row for the opening day: the first reported row is read as "
+                  "gross to date, not as a single day")
+    return mid, low, high, basis
+
+
+def apply_market_frame(pred):
+    """State the model's number over the market's own settlement dates.
+
+    Only for a pre-Friday opening with a projection: the headline stays
+    Thursday-Sunday (what calibration grades), market_frame_* carries the
+    total for the dates the market names (5-day Wednesday-Sunday, or
+    Friday-Sunday when a full Thursday sits outside a 3-day market)."""
+    info = pred.get("midweek_opening") or {}
+    run, projection, frame = info.get("run"), info.get("projection"), info.get("market_frame")
+    dates = opening_weekend_dates_by_day(pred.get("weekend_of") or "")
+    if not run or not frame or not dates or pred.get("regression_source") not in (
+            "midweek-reported-days", "reported-actuals"):
+        return None
+    if tuple(frame) == (dates["Thursday"], dates["Sunday"]):
+        return None
+    total = midweek_opening.frame_total(run, projection, frame[0], frame[1])
+    label = midweek_opening.window_label(frame[0], frame[1])
+    pred["market_window_compatible"] = False
+    pred["market_gross_window"] = label
+    if not total:
+        return None
+    mid, low, high = total
+    pred.update(market_frame_window=label, market_frame_mid_m=mid,
+                market_frame_low_m=low, market_frame_high_m=high)
+    pred["market_window_warning"] = (
+        f"Headline covers Thursday-Sunday; the market settles on {label}: "
+        f"${mid:.1f}M (${low:.1f}M - ${high:.1f}M) on the market's dates.")
+    return total
 
 
 def regression_prediction_values(pred):
@@ -8858,7 +8994,8 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
                   showtime_link_profiles=None,
                   apply_empirical_regression=True, reviews_data=None,
                   cross_chain_data=None, apply_stage_model=True,
-                  census_daypart_data=None, chain_census_data=None):
+                  census_daypart_data=None, chain_census_data=None,
+                  opening_week_data=None):
     """Run full prediction pipeline for a single movie."""
     # The Phase C overlay reads the chain data through a module global because
     # the assembly runs deep inside helpers. predict_movie re-enters itself
@@ -8874,7 +9011,8 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
                                     showtime_link_profiles=showtime_link_profiles,
                                     apply_empirical_regression=apply_empirical_regression, reviews_data=reviews_data,
                                     cross_chain_data=cross_chain_data, apply_stage_model=apply_stage_model,
-                                    census_daypart_data=census_daypart_data)
+                                    census_daypart_data=census_daypart_data,
+                                    opening_week_data=opening_week_data)
     finally:
         _CHAIN_CENSUS_DATA = _outer_chain_census
 
@@ -8885,7 +9023,7 @@ def _predict_movie_inner(movie, seat_data, poly_data, cal, verbose=False,
                          showtime_link_profiles=None,
                          apply_empirical_regression=True, reviews_data=None,
                          cross_chain_data=None, apply_stage_model=True,
-                         census_daypart_data=None):
+                         census_daypart_data=None, opening_week_data=None):
     # Identify opening weekend dates. The scraper may continue collecting
     # Mon-Wed rows for calibration research, but Polymarket brackets settle on
     # the opening weekend only, so prediction totals must stay Thu-Sun.
@@ -8906,6 +9044,11 @@ def _predict_movie_inner(movie, seat_data, poly_data, cal, verbose=False,
     if not opening_dates:
         return None
 
+    if opening_week_data is None:
+        # Same rule as the reported dailies below: a caller that hands in its
+        # own overrides (calibration's recording replay passes {}, the
+        # backtests pass a dated set) gets the model without reported days.
+        opening_week_data = midweek_opening.load_rows() if daily_actual_overrides is None else {}
     if daily_actual_overrides is None:
         daily_actual_overrides = load_daily_actual_overrides(
             weekend_of=seat_data_weekend_of(seat_data or snapshot_data)
@@ -9809,6 +9952,7 @@ def _predict_movie_inner(movie, seat_data, poly_data, cal, verbose=False,
     apply_regression_snapshot_weekend(result, cal)
     attach_comp_model_prediction(result, cal)
     result["weekend_of"] = weekend_of
+    attach_midweek_opening(result, movie, weekend_of, opening_week_data, poly_data)
     select_regression_prediction(result, cal, apply_stage_model=apply_stage_model)
     # ANNOTATION ONLY. The production forecast deliberately applies no
     # component-disagreement buffer (see select_regression_prediction's
@@ -9824,8 +9968,10 @@ def _predict_movie_inner(movie, seat_data, poly_data, cal, verbose=False,
         result["snapshot_original_model_weight"] = round(weight, 4)
         result["snapshot_effective_model_weight"] = round(
             weight * (profile.get("snapshot_weight_multiplier") or 1.0), 4)
+    result["seat_panel_coverage_ratio"] = seat_panel_coverage_ratio(result.get("daily_details"), cal)
     result["data_outage"] = detect_data_outage(result)
     result.update(window_profile(movie, weekend_of, poly_data))
+    apply_market_frame(result)
     return result
 
 
@@ -11040,9 +11186,15 @@ def print_prediction(pred, verbose=False):
     elif pred.get("data_outage"):
         cov = _coverage_value(pred.get("seat_weighted_coverage_ratio"), default=1.0)
         quality = _coverage_value(pred.get("seat_data_quality"), default=1.0)
-        print(f"    ⚠️  DATA OUTAGE: seat panel critically degraded "
-              f"(weighted coverage {cov:.0%}, quality {quality:.0%}, snapshot "
-              f"weight starved) — this headline echoes priors, do not trust it")
+        if pred.get("regression_source") in ("midweek-reported-days", "reported-actuals"):
+            panel = _coverage_value(pred.get("seat_panel_coverage_ratio"), default=cov)
+            print(f"    ⚠️  DATA OUTAGE: seat panel critically degraded (theatres read "
+                  f"{panel:.1%} of the weekend, quality {quality:.0%}) — the headline rests on "
+                  f"reported daily grosses only; no seat evidence behind it")
+        else:
+            print(f"    ⚠️  DATA OUTAGE: seat panel critically degraded "
+                  f"(weighted coverage {cov:.0%}, quality {quality:.0%}, snapshot "
+                  f"weight starved) — this headline echoes priors, do not trust it")
     disagreement = pred.get("model_component_disagreement") or {}
     if disagreement.get("severity") in {"medium", "high"}:
         ratios = disagreement.get("ratios") or {}
@@ -11133,6 +11285,7 @@ PREDICTION_LOG_FIELDS = [
     "coverage_ratio", "data_outage",
     "model_version", "forecast_stage", "baseline_mid_m",
     "model_gross_window", "market_window_compatible",
+    "market_frame_window", "market_frame_mid_m", "market_frame_low_m", "market_frame_high_m",
 ]
 
 
@@ -11168,6 +11321,11 @@ def prediction_log_row(pred, logged_at=None, weekend_of=None):
                            if pred.get("stage_baseline_mid_m") is not None else ""),
         "model_gross_window": pred.get("model_gross_window") or "Thursday-Sunday",
         "market_window_compatible": "0" if pred.get("market_window_compatible") is False else "1",
+        # The model's total over the market's own dates (pre-Friday openings).
+        "market_frame_window": pred.get("market_frame_window") or "",
+        **{f"market_frame_{k}_m": (round(float(pred[f"market_frame_{k}_m"]), 2)
+                                   if pred.get(f"market_frame_{k}_m") is not None else "")
+           for k in ("mid", "low", "high")},
     }
 
 
@@ -11650,6 +11808,7 @@ def main():
     showtime_link_profiles = load_showtime_link_daypart_profiles(
         weekend_of=replay_weekend,
     )
+    opening_week_data = midweek_opening.load_rows(through_date=through_date)
     theatre_counts = load_theatre_counts()
     metadata = load_movie_metadata()
 
@@ -11721,7 +11880,8 @@ def main():
                         showtime_link_profiles=movie_mapping_get(showtime_link_profiles, movie, {}),
                         reviews_data=reviews_data,
                         cross_chain_data=cross_chain_data,
-                        chain_census_data=chain_census_data)
+                        chain_census_data=chain_census_data,
+                        opening_week_data=opening_week_data)
         if pred:
             print_prediction(pred, verbose=verbose)
             if not through_date:            # live runs only, never replays

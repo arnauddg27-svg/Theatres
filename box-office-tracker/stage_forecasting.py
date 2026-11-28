@@ -46,6 +46,13 @@ def weekend_reported(days):
 
 
 def forecast_stage(pred):
+    # A film that opened before Friday (midweek_opening.py): its reported
+    # Wednesday/Thursday are full days, so "after-previews" would mislabel the
+    # call and feed it to every previews-stage rule and error band. Named
+    # midweek-after-<last reported day> while its remaining days are projected.
+    midweek_stage = (pred.get("midweek_opening") or {}).get("stage")
+    if midweek_stage:
+        return midweek_stage
     days = pred.get("daily_details") or {}
     if set(OPENING_DAYS).issubset(days) or weekend_reported(days):
         return "complete"
@@ -63,8 +70,7 @@ def daily_evidence_candidate(pred):
     forecasts, or override completed weekends. All values remain in $millions.
     """
     observed = set(pred.get("daily_details") or {}) & set(OPENING_DAYS)
-    if (not observed or len(observed) == len(OPENING_DAYS)
-            or weekend_reported(pred.get("daily_details"))):
+    if not observed or len(observed) == len(OPENING_DAYS) or forecast_stage(pred) == "complete":
         return None
     mid = number(pred.get("snapshot_mid_m"))
     low = number(pred.get("snapshot_low_m"))

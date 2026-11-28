@@ -29,7 +29,7 @@ PATHS=(
   seat-archive pre-reservation-archive
   calibration.json calibration-freezes
   movie-metadata.csv reviews.csv social-signals.csv polymarket-markets.csv
-  daily-actual-overrides.csv historical-comps.csv theatre-counts.json
+  daily-actual-overrides.csv midweek-opening-dailies.csv historical-comps.csv theatre-counts.json
   theatres-all.json theatres-expansion.json showtime-links.json
 )
 

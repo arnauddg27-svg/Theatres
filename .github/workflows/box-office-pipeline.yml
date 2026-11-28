@@ -886,6 +886,7 @@ jobs:
             box-office-tracker/data/pre-reservation-snapshots.csv \
             box-office-tracker/data/polymarket-markets.csv \
             box-office-tracker/data/daily-actual-overrides.csv \
+            box-office-tracker/data/midweek-opening-dailies.csv \
             box-office-tracker/data/calibration.json \
             box-office-tracker/data/calibration-freezes \
             box-office-tracker/data/run-logs)"

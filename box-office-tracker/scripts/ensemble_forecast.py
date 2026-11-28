@@ -55,7 +55,7 @@ TRADE_MAX_AGE_DAYS = 40          # a tracking number older than this is not used
 FIELDS = [
     "logged_at", "weekend_of", "movie", "forecast_stage", "model_mid_m",
     "market_mid_m", "trade_mid_m", "trade_published_gmt", "trade_kind",
-    "ensemble_mid_m", "ensemble_source", "w_model", "note",
+    "ensemble_mid_m", "ensemble_source", "w_model", "note", "frame",
 ]
 
 
@@ -109,6 +109,29 @@ def load_trade_rows(path=TRADE_CSV):
         return list(csv.DictReader(fh))
 
 
+def _frame_days(label):
+    match = re.search(r"\((\d+) days?\)", label or "")
+    return int(match.group(1)) if match else None
+
+
+def _frame_row_value(row, frame_days):
+    """$M one trade row carries for an N-day market frame, or None.
+
+    3 days: the Friday-Sunday number of a weekend post. Longer: the row's own
+    multi-day number, only when it names the same number of days."""
+    if frame_days == 3:
+        return _f(row.get("three_day_m")) if row.get("kind") == "weekend" and row.get("is_opener") == "1" else None
+    declared = re.search(r"\d+", row.get("multi_day_frame") or "")
+    if not declared or int(declared.group(0)) != frame_days:
+        return None
+    if row.get("kind") == "weekend":
+        return _f(row.get("multi_day_m")) if row.get("is_opener") == "1" else None
+    if row.get("kind") == "range":
+        low, high = _f(row.get("low_m")), _f(row.get("high_m"))
+        return math.sqrt(low * high) if low and high else _f(row.get("point_m"))
+    return None
+
+
 def _row_value(row):
     """3-day opening $M carried by one trade row, or None."""
     if (row.get("multi_day_frame") or "") and row.get("kind") == "range":
@@ -130,9 +153,10 @@ def _row_value(row):
 KIND_RANK = {"weekend": 0, "tracking": 1, "range": 2}    # a pinpoint beats a range midpoint
 
 
-def trade_forecast(movie, weekend_of, as_of_utc, trade_rows, aliases=None):
+def trade_forecast(movie, weekend_of, as_of_utc, trade_rows, aliases=None, frame_days=None):
     """Newest usable published forecast for the film as of `as_of_utc`
-    (ISO, UTC). Posts dated on/after opening Friday 00:00 ET are rejected."""
+    (ISO, UTC). Posts dated on/after opening Friday 00:00 ET are rejected.
+    With frame_days, the number the post gives for that many days."""
     try:
         friday = datetime.strptime(weekend_of, "%Y-%m-%d")
     except (TypeError, ValueError):
@@ -157,7 +181,7 @@ def trade_forecast(movie, weekend_of, as_of_utc, trade_rows, aliases=None):
             continue                              # an undated weekend post from an earlier week
         if not any(titles_match(name, row.get("film") or "") for name in names):
             continue
-        value = _row_value(row)
+        value = _frame_row_value(row, frame_days) if frame_days else _row_value(row)
         if not value:
             continue
         key = (published[:10], -KIND_RANK.get(row.get("kind"), 9), published)
@@ -192,11 +216,24 @@ def ensemble_row(pred, trade_rows, aliases=None):
     compatible = (pred.get("market_window_compatible") or "").strip()
     market_mid = _f(pred.get("poly_implied_mid_m")) if compatible == "1" else None
     note = ""
-    if _f(pred.get("poly_implied_mid_m")) and compatible != "1":
-        note = "holiday frame: market and trade windows differ from the model's; model only"
+    frame = (pred.get("market_frame_window") or "").strip()
+    frame_mid = _f(pred.get("market_frame_mid_m")) if compatible == "0" and frame else None
     trade = None
-    if compatible != "0":            # "0" = a midweek/holiday opener: no published number shares the model's window
-        trade = trade_forecast(pred.get("movie"), pred.get("weekend_of"), pred.get("logged_at"), trade_rows, aliases)
+    if frame_mid:
+        # A film that opened before Friday: predict.py restates the model over
+        # the market's own dates (5-day Wednesday-Sunday, or Friday-Sunday), so
+        # model, market and trade are compared and combined on those dates.
+        model_mid = frame_mid
+        market_mid = _f(pred.get("poly_implied_mid_m"))
+        trade = trade_forecast(pred.get("movie"), pred.get("weekend_of"), pred.get("logged_at"),
+                               trade_rows, aliases, frame_days=_frame_days(frame))
+        note = f"all numbers on the market's dates: {frame}"
+    else:
+        frame = ""
+        if _f(pred.get("poly_implied_mid_m")) and compatible != "1":
+            note = "holiday frame: market and trade windows differ from the model's; model only"
+        if compatible != "0":            # "0" = a midweek/holiday opener: no published number shares the model's window
+            trade = trade_forecast(pred.get("movie"), pred.get("weekend_of"), pred.get("logged_at"), trade_rows, aliases)
     mid, source, w = combine(model_mid, market_mid, trade, pred.get("forecast_stage"))
     return {
         "logged_at": pred.get("logged_at"), "weekend_of": pred.get("weekend_of"),
@@ -207,7 +244,7 @@ def ensemble_row(pred, trade_rows, aliases=None):
         "trade_published_gmt": trade["published_gmt"] if trade else "",
         "trade_kind": trade["kind"] if trade else "",
         "ensemble_mid_m": round(mid, 2) if mid else "",
-        "ensemble_source": source, "w_model": w, "note": note,
+        "ensemble_source": source, "w_model": w, "note": note, "frame": frame,
     }
 
 
@@ -247,6 +284,8 @@ def report(rows, actuals, out=sys.stdout):
         key = (row["movie"], row["weekend_of"])
         if key not in actuals or not _f(row.get("ensemble_mid_m")) or not _f(row.get("model_mid_m")):
             continue
+        if row.get("frame"):
+            continue      # stated on the market's dates; the recorded actual is Thursday-Sunday
         by.setdefault((row.get("forecast_stage") or "", key), []).append(row)
     lines = []
     for stage in ("presales", "after-previews", "after-friday", "after-saturday", "complete"):
