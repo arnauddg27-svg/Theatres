@@ -51,11 +51,23 @@ W_MODEL_WITH_TRADE = {
     "presales": 0.35, "after-previews": 0.5, "after-friday": 0.85,
     "after-saturday": 1.0, "after-sunday": 1.0, "complete": 1.0,
 }
+# Weight on the other chains' pre-sales estimate before release
+# (chain_presales.py, 2026-11-28). TESTED, NOT USED: both stay 0 and the
+# estimate is only logged (seats_mid_m). Leave-one-weekend-out it looked like a
+# small gain (with trade 21.4% -> 19.9% at 0.35, n=30), but graded the way it
+# would have run -- trained on earlier weekends only, last pre-release call of
+# 22 openings since 2026-09-25 -- it made the mix worse: films with a market
+# 9.4% -> 10.4% at 0.15; films without one, trade + model 20.0% -> trade + seats
+# 25.4% at 0.35 (trade alone 23.9%). Re-test with
+# scripts/chain_presales_backtest.py as the features table grows.
+W_SEATS_WITH_MARKET = 0.0
+W_SEATS_WITH_TRADE = 0.0
 TRADE_MAX_AGE_DAYS = 40          # a tracking number older than this is not used
 FIELDS = [
     "logged_at", "weekend_of", "movie", "forecast_stage", "model_mid_m",
     "market_mid_m", "trade_mid_m", "trade_published_gmt", "trade_kind",
     "ensemble_mid_m", "ensemble_source", "w_model", "note", "frame",
+    "seats_mid_m", "seats_chains",
 ]
 
 
@@ -190,9 +202,18 @@ def trade_forecast(movie, weekend_of, as_of_utc, trade_rows, aliases=None, frame
     return best[1] if best else None
 
 
-def combine(model_mid, market_mid, trade, stage):
-    """Return (ensemble_mid, source, w_model)."""
+def combine(model_mid, market_mid, trade, stage, seats=None):
+    """Return (ensemble_mid, source, w_model). `seats`: the other chains'
+    pre-sales estimate ($M); mixed before release only, and only while its
+    weight is above 0 (see W_SEATS_WITH_MARKET)."""
     stage = (stage or "").strip() or "presales"
+    if seats and stage == "presales":
+        if market_mid and W_SEATS_WITH_MARKET > 0:
+            w = W_SEATS_WITH_MARKET
+            return math.exp(w * math.log(seats) + (1 - w) * math.log(market_mid)), "market+seats", 0.0
+        if not market_mid and trade and W_SEATS_WITH_TRADE > 0:
+            w = W_SEATS_WITH_TRADE
+            return math.exp(w * math.log(seats) + (1 - w) * math.log(trade["mid_m"])), "trade+seats", 0.0
     if market_mid and model_mid:
         w = W_MODEL_WITH_MARKET.get(stage, 0.0)
         mid = math.exp(w * math.log(model_mid) + (1 - w) * math.log(market_mid))
@@ -211,7 +232,19 @@ def combine(model_mid, market_mid, trade, stage):
     return None, "", ""
 
 
-def ensemble_row(pred, trade_rows, aliases=None):
+def presale_seats(pred, presales):
+    """chain_presales.estimate() for a pre-release row, at the cutoff its own
+    timestamp had reached; None otherwise."""
+    if not presales or (pred.get("forecast_stage") or "").strip() not in ("", "presales"):
+        return None
+    module, table, actuals = presales
+    cutoff = module.cutoff_at(pred.get("weekend_of"), pred.get("logged_at") or "")
+    if not cutoff:
+        return None
+    return module.estimate(pred.get("movie"), pred.get("weekend_of"), cutoff, table, actuals)
+
+
+def ensemble_row(pred, trade_rows, aliases=None, presales=None):
     model_mid = _f(pred.get("headline_mid_m"))
     compatible = (pred.get("market_window_compatible") or "").strip()
     market_mid = _f(pred.get("poly_implied_mid_m")) if compatible == "1" else None
@@ -234,7 +267,10 @@ def ensemble_row(pred, trade_rows, aliases=None):
             note = "holiday frame: market and trade windows differ from the model's; model only"
         if compatible != "0":            # "0" = a midweek/holiday opener: no published number shares the model's window
             trade = trade_forecast(pred.get("movie"), pred.get("weekend_of"), pred.get("logged_at"), trade_rows, aliases)
-    mid, source, w = combine(model_mid, market_mid, trade, pred.get("forecast_stage"))
+    # Pre-Friday openers are left out: their pre-sales hold a full Thursday.
+    seats = presale_seats(pred, presales) if compatible != "0" else None
+    mid, source, w = combine(model_mid, market_mid, trade, pred.get("forecast_stage"),
+                             seats=seats["mid_m"] if seats else None)
     return {
         "logged_at": pred.get("logged_at"), "weekend_of": pred.get("weekend_of"),
         "movie": pred.get("movie"), "forecast_stage": pred.get("forecast_stage"),
@@ -245,6 +281,8 @@ def ensemble_row(pred, trade_rows, aliases=None):
         "trade_kind": trade["kind"] if trade else "",
         "ensemble_mid_m": round(mid, 2) if mid else "",
         "ensemble_source": source, "w_model": w, "note": note, "frame": frame,
+        "seats_mid_m": round(seats["mid_m"], 2) if seats else "",
+        "seats_chains": f"{seats['chains']} @{seats['cutoff']}" if seats else "",
     }
 
 
@@ -255,8 +293,36 @@ def load_predictions(path=PREDICTION_LOG):
         return list(csv.DictReader(fh))
 
 
-def build(predictions, trade_rows, aliases=None):
-    return [ensemble_row(p, trade_rows, aliases) for p in predictions if _f(p.get("headline_mid_m"))]
+def build(predictions, trade_rows, aliases=None, presales=None):
+    return [ensemble_row(p, trade_rows, aliases, presales) for p in predictions if _f(p.get("headline_mid_m"))]
+
+
+def load_presales(predictions, update=True):
+    """(module, features table, actuals) for presale_seats(), after appending
+    the current weekend's features for every cutoff that has passed. None when
+    the module or its data cannot be read: the mix then runs without it."""
+    try:
+        sys.path.insert(0, os.path.dirname(HERE))
+        import chain_presales as CP
+        weekend = max((p.get("weekend_of") or "" for p in predictions), default="")
+        if update and weekend:
+            national = {}
+            try:
+                import predict as P
+                metadata, counts = P.load_movie_metadata(), P.load_theatre_counts()
+                for title in {p.get("movie") for p in predictions if p.get("weekend_of") == weekend}:
+                    count = P.national_theatre_count_for_movie(title, counts, metadata=metadata)
+                    if count:
+                        national[CP.movie_key(title)] = count
+            except Exception as exc:
+                print(f"  (national theatre counts unavailable: {type(exc).__name__}: {exc})")
+            added = CP.update_table(weekend, national=national, aliases=None)
+            if added:
+                print(f"chain pre-sales: {added} feature row(s) added for {weekend}")
+        return CP, CP.load_table(), CP.load_actuals()
+    except Exception as exc:
+        print(f"⚠️  chain pre-sales unavailable ({type(exc).__name__}: {exc}); mixing without them")
+        return None
 
 
 def write_log(rows, path=ENSEMBLE_LOG):
@@ -313,7 +379,8 @@ def report(rows, actuals, out=sys.stdout):
 def main(argv=None):
     argv = argv if argv is not None else sys.argv[1:]
     predictions = load_predictions()
-    rows = build(predictions, load_trade_rows(), load_aliases())
+    presales = load_presales(predictions, update="--report" not in argv)
+    rows = build(predictions, load_trade_rows(), load_aliases(), presales)
     if "--report" in argv:
         report(rows, load_actuals())
         return 0
@@ -330,7 +397,8 @@ def main(argv=None):
             continue
         print(f"  {movie}: combined ${row['ensemble_mid_m']}M ({row['ensemble_source']}; "
               f"model ${row['model_mid_m'] or '—'}M, market ${row['market_mid_m'] or '—'}M, "
-              f"trade ${row['trade_mid_m'] or '—'}M){' — ' + row['note'] if row['note'] else ''}")
+              f"trade ${row['trade_mid_m'] or '—'}M, other chains' pre-sales ${row['seats_mid_m'] or '—'}M)"
+              f"{' — ' + row['note'] if row['note'] else ''}")
     return 0
 
 

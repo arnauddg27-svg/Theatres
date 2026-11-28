@@ -28,6 +28,9 @@ OUTPUT_FILES = [
     "box-office-tracker/data/polymarket-odds-log.csv",
     "box-office-tracker/data/trade-forecasts.csv",
     "box-office-tracker/data/ensemble-log.csv",
+    # The other chains' pre-sales per film and cutoff (chain_presales.py,
+    # appended by ensemble_forecast.py).
+    "box-office-tracker/data/chain-presale-features.csv",
     "box-office-tracker/data/paper-trades.csv",
     "box-office-tracker/data/bracket-probabilities.csv",
     "box-office-tracker/data/chain-census-log.csv",
