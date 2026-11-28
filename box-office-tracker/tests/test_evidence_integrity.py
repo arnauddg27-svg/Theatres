@@ -53,6 +53,23 @@ class EvidenceIntegrityTests(unittest.TestCase):
         P.select_regression_prediction(pred)
         self.assertTrue(pred["forecast_provisional"])
 
+    def test_no_preview_opener_with_fri_sun_reported_is_complete(self):
+        # 2026-11-28 audit: I Play Rocky (no Thursday row) logged $13.5M after-sunday vs $9.33M reported.
+        from stage_forecasting import forecast_stage
+        pred = {"movie": "X", "seat_mid_m": 13.5, "seat_low_m": 9, "seat_high_m": 31,
+                "daily_details": {d: {"domestic_mid": g * 1_000_000, "actual_override": True}
+                                  for d, g in (("Friday", 3.8), ("Saturday", 3.25), ("Sunday", 2.28))}}
+        P.select_regression_prediction(pred)
+        self.assertAlmostEqual(9.33, pred["regression_mid_m"], places=2)
+        self.assertAlmostEqual(9.33, pred["regression_high_m"], places=2)
+        self.assertEqual("reported-actuals", pred["regression_source"])
+        self.assertEqual("complete", forecast_stage(pred))
+        # A seat-observed Thursday without a reported gross keeps the weekend open.
+        pred["daily_details"]["Thursday"] = {"domestic_mid": 1_000_000}
+        self.assertEqual("complete", forecast_stage(pred))
+        P.select_regression_prediction(pred)
+        self.assertNotEqual("reported-actuals", pred["regression_source"])
+
     def test_forecast_cannot_fall_below_already_reported_revenue(self):
         pred = {"movie": "X", "seat_mid_m": 5, "seat_low_m": 3, "seat_high_m": 8,
                 "daily_details": {"Thursday": {"domestic_mid": 10_000_000, "actual_override": True}}}

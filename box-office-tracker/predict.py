@@ -5858,12 +5858,21 @@ def select_regression_prediction(pred, cal=None, *, apply_stage_model=True):
     reported = {d: _detail_mid_m(v) for d, v in (pred.get("daily_details") or {}).items()
                 if d in OPENING_WEEKEND_DAYS and v.get("actual_override")}
     reported_total = sum(reported.values())
-    if set(OPENING_WEEKEND_DAYS).issubset(reported):
+    # 2026-11-28 audit: a no-preview opener (I Play Rocky, 11-20) never gets a
+    # Thursday row -- not in the seat data, not in the actuals, where Friday
+    # then carries any previews. With Fri/Sat/Sun reported its weekend is
+    # over, yet it fell to the partial-weekend branch and logged $13.5M
+    # (seat regression) against $9.33M reported.
+    no_preview_complete = ({"Friday", "Saturday", "Sunday"} <= set(reported)
+                           and "Thursday" not in (pred.get("daily_details") or {}))
+    if set(OPENING_WEEKEND_DAYS).issubset(reported) or no_preview_complete:
         # Once every day is reported there is no remaining weekend to forecast.
         # Regression, reviews and uncertainty floors cannot change that outcome.
         mid = low = high = reported_total
         source = "reported-actuals"
-        basis = "All four opening days reported; total counts previews once"
+        basis = ("All four opening days reported; total counts previews once"
+                 if not no_preview_complete else
+                 "Fri-Sun reported, no separate previews; Friday carries any previews")
         pred["forecast_provisional"] = any(
             v.get("actual_override_status") == "provisional"
             for v in (pred.get("daily_details") or {}).values())

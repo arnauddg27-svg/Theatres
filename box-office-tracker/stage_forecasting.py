@@ -35,6 +35,10 @@ def forecast_stage(pred):
     days = pred.get("daily_details") or {}
     if set(OPENING_DAYS).issubset(days):
         return "complete"
+    # No-preview opener: no Thursday at all, Fri-Sun reported (2026-11-28).
+    if ("Thursday" not in days and {"Friday", "Saturday", "Sunday"} <= set(days)
+            and all((days.get(d) or {}).get("actual_override") for d in ("Friday", "Saturday", "Sunday"))):
+        return "complete"
     for day, stage in (("Sunday", "after-sunday"), ("Saturday", "after-saturday"),
                        ("Friday", "after-friday"), ("Thursday", "after-previews")):
         if day in days:
@@ -49,7 +53,7 @@ def daily_evidence_candidate(pred):
     forecasts, or override completed weekends. All values remain in $millions.
     """
     observed = set(pred.get("daily_details") or {}) & set(OPENING_DAYS)
-    if not observed or len(observed) == len(OPENING_DAYS):
+    if not observed or len(observed) == len(OPENING_DAYS) or forecast_stage(pred) == "complete":
         return None
     mid = number(pred.get("snapshot_mid_m"))
     low = number(pred.get("snapshot_low_m"))
