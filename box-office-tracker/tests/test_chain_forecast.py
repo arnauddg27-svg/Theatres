@@ -183,6 +183,15 @@ class AuditFixesTest(unittest.TestCase):
         est, note = CF.carried(by_day, SHARES, "Saturday", "Friday", 5.0)        # 100 of 200 showings read
         self.assertIsNone(est)
 
+    def test_a_carry_needs_nearly_all_of_the_days_theatres(self):
+        # One Cinemark shard still out: 46 of 50 theatres, showings barely down.
+        short = {c: dict(v, theatres=46, showings=195) if c == "CNMK" else v for c, v in cells(7.0).items()}
+        est, note = CF.carried({"Friday": cells(5.0), "Saturday": short}, SHARES, "Saturday", "Friday", 5.0)
+        self.assertIsNone(est)              # Alamo + Harkins alone are under the pooled-share floor
+        full = {c: dict(v, theatres=49) for c, v in cells(7.0).items()}
+        est, note = CF.carried({"Friday": cells(5.0), "Saturday": full}, SHARES, "Saturday", "Friday", 5.0)
+        self.assertAlmostEqual(est, 7.0, places=6)
+
     def test_pace_read_joins_the_friday_average_only_with_reported_previews(self):
         pace = {"friday_m": 3.0, "chains": "CNMK+HARK"}
         fc = CF.weekend_forecast({"Thursday": 2.0}, {}, SHARES, RATIOS, pace_friday=pace)

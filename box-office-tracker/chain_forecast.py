@@ -61,6 +61,12 @@ CARRY_POOL_EXTRA = ()
 # reads low without failing the reference-day test. Saturday and Sunday list
 # as many showings as the day before (The Hunger Games: 6,495 / 6,524).
 MIN_TARGET_SHOWINGS = 0.85
+# ... and nearly all of its theatres. A film plays the same houses on Saturday
+# as on Friday, while showings grow about 7%, so one Cinemark shard still out
+# at forecast time (1 of 12, 8% of theatres) passes the showings test and
+# would read the day 6% low. Theatres catch it: over 110 chain-days the lowest
+# day-over-day theatre ratio is 0.96 (Cinemark never under 0.98).
+MIN_TARGET_THEATRES = 0.95
 # A show date counts as played once the last West-coast show has started and
 # been read: 10:00 UTC the next morning. Before that the post-show lanes hold
 # only the showings that already ended (matinees at 22:30Z), which the pooled
@@ -188,7 +194,8 @@ def carried(cells_by_day, shares, day, prev, prev_reported, pool=POOL):
     a, b = cells_by_day.get(day) or {}, cells_by_day.get(prev) or {}
     pool = tuple(pool) + tuple(c for c in CARRY_POOL_EXTRA if c not in pool)
     chains = [c for c in _usable(a, day, shares, pool) if c in _usable(b, prev, shares, pool)
-              and a[c].get("showings", 0) >= MIN_TARGET_SHOWINGS * b[c].get("showings", 0)]
+              and a[c].get("showings", 0) >= MIN_TARGET_SHOWINGS * b[c].get("showings", 0)
+              and a[c].get("theatres", 0) >= MIN_TARGET_THEATRES * b[c].get("theatres", 0)]
     if not chains or not prev_reported or prev_reported <= 0:
         return None, "no chain counted on both days"
     now, _ = pooled(a, day, shares, chains=chains)
