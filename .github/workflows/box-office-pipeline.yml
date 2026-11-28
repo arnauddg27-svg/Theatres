@@ -947,6 +947,10 @@ jobs:
         if: steps.finalize_guard.outputs.needs_finalize == 'true'
         working-directory: box-office-tracker
         continue-on-error: true
+        env:
+          # Optional contact Wikimedia asks automated clients for; set it as a
+          # repository variable. Unset, the script sends a generic client name.
+          WIKIMEDIA_CONTACT: ${{ vars.WIKIMEDIA_CONTACT }}
         run: python scripts/import_wiki_pageviews.py
 
       - name: Census coverage scorecard (informational)

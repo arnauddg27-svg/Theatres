@@ -47,7 +47,7 @@ def _make_weight(half_life_weeks):
 def replay_all(hist, md):
     out = []
     for h in hist:
-        movie, w, actual = h["movie"], h["weekend_of"], h["actual_total"]
+        movie, w, actual = h["movie"], h["weekend_of"], P.model_window_actual(h)
         thu = (datetime.strptime(w, "%Y-%m-%d") - timedelta(days=1)).strftime("%Y-%m-%d")
         _CURRENT_WEEKEND["w"] = w
         try:

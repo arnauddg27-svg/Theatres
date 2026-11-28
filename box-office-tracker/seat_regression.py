@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from math import ceil, exp, isfinite, log
 from statistics import median
-from actuals_quality import independent_daily_actuals
+from actuals_quality import independent_daily_actuals, model_window_actual
 
 OPENING_DAYS = ("Thursday", "Friday", "Saturday", "Sunday")
 COVERAGE_FLOOR = 0.60          # per-day admissibility for seat rows
@@ -644,7 +644,7 @@ def _tier_loo(history, tier):
         params = fit_params(train)
         fold_day_shares = learn_day_shares(train)   # no leakage: train-only
         entry = next(e for e in history if e.get("movie") == m)
-        actual_total = _f(entry.get("actual_total"))
+        actual_total = model_window_actual(entry)   # the seat days span Thu-Sun
         if not actual_total or actual_total <= 0:
             continue
         per_day = _assemble_entry(entry, build_sources, params)

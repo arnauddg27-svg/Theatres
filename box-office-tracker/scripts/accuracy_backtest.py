@@ -11,6 +11,7 @@ from datetime import timedelta
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 import stage_backtest as B
+import actuals_quality as AQ
 P=B.P
 
 
@@ -38,7 +39,7 @@ def main():
             overrides={m:{d:v for d,v in days.items() if v.get('as_of_date')} for m,days in overrides.items()}
             for e in [e for e in history if e['weekend_of']==w]:
                 movie=e['movie'];sd=P.movie_mapping_get(ss,movie,{});sp=P.movie_mapping_get(sn,movie,{})
-                row={k:e.get(k) for k in ('movie','weekend_of','data_outage')};row.update(checkpoint=name,actual_m=e['actual_total'],training_movies=len(cal['history']),cutoff=cutoff.isoformat())
+                row={k:e.get(k) for k in ('movie','weekend_of','data_outage')};row.update(checkpoint=name,actual_m=AQ.model_window_actual(e),training_movies=len(cal['history']),cutoff=cutoff.isoformat())
                 for key,weighted in [('unweighted',False),('weighted',True)]:
                     P.THEATRE_WEIGHTING_APPLY=weighted
                     pred=P.predict_movie(movie,sd,[],copy.deepcopy(cal),snapshot_data=sp,social_data={},daily_actual_overrides=overrides,showtime_link_profiles={},reviews_data={},cross_chain_data={},national_theatre_count=P.national_theatre_count_for_movie(movie,counts,metadata=metadata))

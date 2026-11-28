@@ -17,7 +17,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import seat_regression as sr
-from actuals_quality import actuals_as_of
+from actuals_quality import actuals_as_of, model_window_actual
 
 
 def valid_date(value):
@@ -62,7 +62,7 @@ def evaluate(history, min_training_movies=8):
         n_train = len(set(sr.weekend_cv_movies(sr.fitting_history(train))))
         block = sr.fit_regression_calibration(train) if n_train >= min_training_movies else None
         for e in (e for e in history if e.get("weekend_of") == weekend):
-            actual = sr._f(e.get("actual_total"))
+            actual = model_window_actual(e)   # the seat features cover Thursday-Sunday
             row = {"movie": e.get("movie"), "weekend_of": weekend,
                    "actual_m": actual, "training_movies": n_train,
                    "data_outage": sr.is_data_outage_entry(e)}

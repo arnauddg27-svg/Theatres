@@ -27,6 +27,7 @@ import statistics
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from actuals_quality import model_window_actual  # noqa: E402
 
 WARN_LOG_ERROR = 0.22   # |log(truth/fleet)| above this -> flag (~25% share miss)
 MIN_SOLD_SEATS = 15000  # below this the seats/$ ratio is too noisy to score
@@ -39,7 +40,7 @@ def film_rows(history, seat_loader):
     for h in history:
         movie = h.get("movie")
         weekend = h.get("weekend_of") or h.get("date")
-        actual = h.get("actual_total") or h.get("actual")
+        actual = model_window_actual(h)   # the seats counted span Thursday-Sunday
         if not movie or not weekend or not actual or h.get("data_outage"):
             continue
         if (movie, weekend) in seen:

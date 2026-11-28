@@ -24,7 +24,7 @@ Usage:
 
 import glob
 import theatre_weights
-from forecast_windows import market_frame, window_profile
+from forecast_windows import market_frame, opened_before_friday, window_profile
 import midweek_opening
 import gzip
 import json, csv, os, sys, re, statistics
@@ -34,7 +34,8 @@ import functools
 import seat_regression
 import holdover
 import small_film_gate
-from actuals_quality import independent_daily_actuals, independent_daily_override
+from actuals_quality import (independent_daily_actuals, independent_daily_override,
+                             model_window_actual)
 from forecast_evaluation import select_forecast_checkpoints, utc_timestamp
 from stage_forecasting import daily_evidence_candidate, forecast_stage, weekend_reported
 from dataclasses import replace
@@ -5303,6 +5304,8 @@ def class_opening_multiplier(cal, audience_type, basis, exclude=None, weekend_of
             continue
         if weekend_of and entry.get("weekend_of") and entry["weekend_of"] >= weekend_of:
             continue
+        if entry.get("non_preview_thursday"):
+            continue          # a full opening Thursday is not a preview gross
         daily = entry.get("daily_actuals") or {}
         total = _positive_float(entry.get("actual_total"))
         thu = _positive_float(daily.get("Thursday"))
@@ -5403,8 +5406,9 @@ def _graded_live_ratios(cal):
         return _STAGE_BAND_CACHE[key]
     actual = {}
     for e in (cal or {}).get("history", []) or []:
-        if e.get("actual_total") and e.get("weekend_of") and e.get("movie") and not e.get("data_outage"):
-            actual[(e["weekend_of"], _movie_lookup_key(e["movie"]))] = float(e["actual_total"])
+        # The logged headline covers Thursday-Sunday; grade it on that window.
+        if model_window_actual(e) and e.get("weekend_of") and e.get("movie") and not e.get("data_outage"):
+            actual[(e["weekend_of"], _movie_lookup_key(e["movie"]))] = model_window_actual(e)
     latest = {}
     try:
         with open(PREDICTION_LOG_CSV, newline="") as f:
@@ -8726,7 +8730,7 @@ def record_actual(cal, movie, predicted_mid, predicted_low, predicted_high,
     # Refine AMC market share from seat-based estimates
     share_estimates = []
     for h in history:
-        actual_total = _positive_float(h.get("actual_total", h.get("actual")))
+        actual_total = model_window_actual(h)   # seats cover Thursday-Sunday
         seat_raw_estimate = _positive_float(h.get("seat_raw_estimate"))
         if seat_raw_estimate and actual_total and actual_total > 0:
             implied = seat_raw_estimate / actual_total
@@ -9970,7 +9974,9 @@ def _predict_movie_inner(movie, seat_data, poly_data, cal, verbose=False,
             weight * (profile.get("snapshot_weight_multiplier") or 1.0), 4)
     result["seat_panel_coverage_ratio"] = seat_panel_coverage_ratio(result.get("daily_details"), cal)
     result["data_outage"] = detect_data_outage(result)
-    result.update(window_profile(movie, weekend_of, poly_data))
+    result.update(window_profile(
+        movie, weekend_of, poly_data,
+        early_opening=opened_before_friday(movie, weekend_of, daily_actual_overrides)))
     apply_market_frame(result)
     return result
 
@@ -10304,7 +10310,7 @@ def learned_local_thursday_share(cal, exclude_movie="", target_metadata=None,
             entry_metadata = metadata_for_movie(entry_movie, metadata)
             if entry_metadata:
                 saw_entry_metadata = True
-        actual = item.get("actual_total") or item.get("actual")
+        actual = model_window_actual(item)      # paired with Thu-Sun predictions
         daily_predictions = item.get("daily_predictions") or {}
         thursday = daily_predictions.get("Thursday")
         if not thursday:
@@ -11505,9 +11511,9 @@ def print_history(cal):
     for h in history:
         live = h.get("live_headline") or {}
         predicted = live.get("mid_m") or h.get("predicted_mid", 0)
-        actual = h.get("actual_total", h.get("actual"))
-        if actual is None:
-            actual = h.get("actual")
+        # Thursday-Sunday for a film that opened before Friday: the window the
+        # prediction beside it covers (actual_total is the 3-day opening).
+        actual = model_window_actual(h)
         pred_str = fmt_m(predicted)
         actual_str = fmt_m(actual) if actual else "—"
         if h.get("error_pct") is not None:

@@ -26,6 +26,7 @@ from datetime import datetime, timedelta
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import predict as P  # noqa: E402
 import calibrate as C
+import actuals_quality as AQ
 from actuals_quality import revise_reported_daily_actuals
 
 UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/124.0 Safari/537.36"
@@ -130,6 +131,17 @@ def opening_days(daily, weekend_of):
     return od
 
 
+def thursday_is_regular(daily, weekend_of):
+    """True when the Thursday before `weekend_of` is a ranked full day (the
+    film had already opened), not a preview row ranked 'P'."""
+    thu = datetime.strptime(weekend_of, "%Y-%m-%d").date() - timedelta(days=1)
+    if not (daily and thu in daily) or str(daily[thu][0]).strip().upper() == "P":
+        return False
+    # An opener of THIS weekend (first day at most a week back), not a holdover
+    # whose every Thursday is a regular day.
+    return (thu - min(daily)).days < 7
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--test", nargs=2, metavar=("TITLE", "WEEKEND"))
@@ -161,15 +173,24 @@ def main():
         # the biggest day, falls BELOW Sunday. Normal frontloading (Sat<Fri but
         # Sat>Sun, e.g. horror/tentpoles) is a real day-shape and must stay in.
         anomalous = ("Saturday" in od and "Sunday" in od and od["Saturday"] < od["Sunday"])
-        print(f"  {movie[:30]:30} {w}  {od}  sum=${sum(od.values()):.1f}M"
-              f"{'  [Sat<Fri -> day-weight-excluded]' if anomalous else ''}")
-        if not args.dry_run:
+        # Rounding is not a revision (calibrate.reported_actuals_differ); an
+        # unchanged film is left alone so the revision chain stays meaningful.
+        changed = C.reported_actuals_differ(e, od) or bool(AQ.estimated_actual_days(e))
+        opening = AQ.standard_opening_total(od, getattr(od, "non_preview_thursday", False))
+        print(f"  {movie[:30]:30} {w}  {dict(od)}  3-day=${opening:.2f}M"
+              f"  recorded=${float(e.get('actual_total') or 0):.2f}M"
+              f"{'  [opened before Friday]' if getattr(od, 'non_preview_thursday', False) else ''}"
+              f"{'  [Sat<Fri -> day-weight-excluded]' if anomalous else ''}"
+              f"{'  CHANGED' if changed else ''}")
+        if changed and not args.dry_run:
             revise_reported_daily_actuals(e, od, getattr(od, "source_url", "") or "the-numbers.com per-movie daily table",
                                          datetime.now().date().isoformat())
             if anomalous:
                 e["exclude_from_day_weights"] = True
             updated += 1
     if not args.dry_run:
+        if updated:
+            C.refresh_fitted_factors(cal)
         P.save_calibration(cal)
         print(f"\nupdated {updated} films with real daily grosses -> {cal_path}")
 

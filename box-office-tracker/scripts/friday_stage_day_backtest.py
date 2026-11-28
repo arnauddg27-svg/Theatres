@@ -31,7 +31,7 @@ def main():
     load_md = getattr(P, "load_movie_metadata", None)
     out = []
     for h in hist:
-        movie, w, actual = h["movie"], h["weekend_of"], h["actual_total"]
+        movie, w, actual = h["movie"], h["weekend_of"], P.model_window_actual(h)
         da = h.get("daily_actuals") or {}
         if w < since or h.get("data_outage") or not all(da.get(d) for d in DAYS):
             continue

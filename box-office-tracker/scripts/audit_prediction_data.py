@@ -3,7 +3,7 @@
 import argparse,collections,csv,json,sys
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-from actuals_quality import independent_daily_actuals,estimated_actual_days
+from actuals_quality import independent_daily_actuals,estimated_actual_days,model_window_actual
 from historical_comps import load_movie_metadata,metadata_for_movie
 
 
@@ -20,8 +20,8 @@ def audit(data_dir):
         daily=independent_daily_actuals(e)
         if e.get('exclude_from_calibration'):issues.append({'movie':movie,'issue':'excluded from standard-opening calibration','reason':e.get('calibration_exclusion_reason','')})
         if len(daily)<4:issues.append({'movie':movie,'issue':'incomplete independent daily split','usable_days':sorted(daily),'estimated_days':sorted(estimated_actual_days(e)),'folded_previews':bool(e.get('previews_folded_into_friday'))})
-        if len(daily)==4 and abs(sum(daily.values())-e.get('actual_total',0))>.05:
-            issues.append({'movie':movie,'issue':'daily sum differs from weekend total','difference_m':round(sum(daily.values())-e['actual_total'],6)})
+        if len(daily)==4 and abs(sum(daily.values())-(model_window_actual(e) or 0))>.05:
+            issues.append({'movie':movie,'issue':'daily sum differs from weekend total','difference_m':round(sum(daily.values())-(model_window_actual(e) or 0),6)})
     return {'films':len(history),'complete_independent_splits':sum(len(independent_daily_actuals(e))==4 for e in history),'flagged_outages':sum(bool(e.get('data_outage')) for e in history),'issues':issues}
 
 

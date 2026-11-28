@@ -65,7 +65,7 @@ def main():
 
     rows = []
     for h in hist:
-        movie, w, actual = h["movie"], h["weekend_of"], h["actual_total"]
+        movie, w, actual = h["movie"], h["weekend_of"], P.model_window_actual(h)
         friday = w   # weekend_of IS the opening Friday; data through Friday
         if h.get("data_outage"):
             rows.append((movie, w, actual, None, None, "outage-excluded", None))
