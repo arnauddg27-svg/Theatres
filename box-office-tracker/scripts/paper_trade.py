@@ -155,6 +155,12 @@ def place_bets(pred_path=PREDICTION_LOG, odds_path=ODDS_LOG, trades=None, ratios
     for r in rows:
         if not r.get("poly_logged_at") or not r.get("poly_event"):
             continue
+        if (r.get("market_window_compatible") or "").strip() == "0":
+            # The headline is Thursday-Sunday and this market settles on other
+            # dates (5-day holiday frame): no comparable number, no bet.
+            # 2026-11-27: ten bets were placed on the 5-day Thanksgiving
+            # markets from a Thursday-Sunday headline before this gate.
+            continue
         key = (r["weekend_of"], B.movie_key(r["movie"]), r["poly_logged_at"], r["poly_event"])
         snapshot = snaps.get(key)
         stage = r.get("forecast_stage") or ""

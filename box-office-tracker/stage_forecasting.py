@@ -32,6 +32,13 @@ def number(value):
 
 
 def forecast_stage(pred):
+    # A film that opened before Friday (midweek_opening.py): its reported
+    # Wednesday/Thursday are full days, so "after-previews" would mislabel the
+    # call and feed it to every previews-stage rule and error band. Named
+    # midweek-after-<last reported day> while its remaining days are projected.
+    midweek_stage = (pred.get("midweek_opening") or {}).get("stage")
+    if midweek_stage:
+        return midweek_stage
     days = pred.get("daily_details") or {}
     if set(OPENING_DAYS).issubset(days):
         return "complete"

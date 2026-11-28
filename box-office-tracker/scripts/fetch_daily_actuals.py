@@ -152,7 +152,7 @@ def calendar_movies(weekend_of, path=CALENDAR_JSON):
     return out
 
 
-def fetch_split_opening_days(movie, weekend_of, fetch_table=None):
+def fetch_split_opening_days(movie, weekend_of, fetch_table=None, daily=None):
     """{day: gross_m} for the opening Thu-Sun, previews split out of Friday.
     Friday is dropped unless Thursday is known (otherwise it may still carry
     the previews) -- or unless Saturday is already published with still no
@@ -160,20 +160,115 @@ def fetch_split_opening_days(movie, weekend_of, fetch_table=None):
     Everest: The Other Side / Christmas at the Kringles, no-preview openers,
     never got a Friday row)."""
     import import_thenumbers_daily as N
-    fetch_table = fetch_table or (lambda t, y: N.fetch_daily_table(t, y, weekend_of=weekend_of))
-    year = int(str(weekend_of)[:4])
-    daily = fetch_table(movie, year) or {}
+    if daily is None:
+        fetch_table = fetch_table or (lambda t, y: N.fetch_daily_table(t, y, weekend_of=weekend_of))
+        daily = fetch_table(movie, int(str(weekend_of)[:4])) or {}
     days = N.opening_days(daily, weekend_of) if daily else {}
     if "Friday" in days and "Thursday" not in days and "Saturday" not in days:
         days.pop("Friday")
     return {d: g for d, g in days.items() if MIN_GROSS_M <= g <= MAX_GROSS_M}
 
 
+# PRE-FRIDAY OPENINGS (2026-11-27 audit). A film that opens on Wednesday has
+# two full days on the books before the opening Friday, and this script only
+# kept Thursday-Sunday, with nothing saying whether a Thursday row was
+# previews or a regular day. Every day of the opening week of such a film
+# (previews flagged) now also goes to data/midweek-opening-dailies.csv, which
+# predict.py reads through midweek_opening.py. The file doubles as the comp
+# set: a finished opening becomes history for the next one.
+def midweek_rows_for(movie, weekend_of, daily, existing, as_of_date):
+    """Rows to append for this film's opening week, [] for a Friday opener."""
+    import midweek_opening as M
+    rows = M.week_rows(daily, weekend_of)
+    if not M.opens_before_friday(rows, weekend_of):
+        return []
+    return M.merge_rows(existing, weekend_of, movie, rows, as_of_date)
+
+
+def upcoming_friday(now_utc):
+    """The Friday of the weekend that has not started yet (Monday-Thursday),
+    or None from Friday to Sunday, when last Friday is the live weekend."""
+    days_ahead = (4 - now_utc.weekday()) % 7
+    if days_ahead == 0 or now_utc.weekday() > 4:
+        return None
+    return (now_utc + timedelta(days=days_ahead)).strftime("%Y-%m-%d")
+
+
+def early_openers(weekend_of):
+    """Titles the release calendar or a market's stated dates put before Friday."""
+    out = []
+    try:
+        import json
+        with open(CALENDAR_JSON) as f:
+            data = json.load(f)
+        if str(data.get("weekend_of")) == str(weekend_of):
+            for t in data.get("titles") or []:
+                if not isinstance(t, dict):
+                    continue
+                try:
+                    opens = datetime.strptime(t.get("date") or "", "%B %d, %Y").strftime("%Y-%m-%d")
+                except ValueError:
+                    continue
+                if opens < str(weekend_of) and (t.get("title") or "").strip():
+                    out.append(t["title"].strip())
+    except (OSError, ValueError):
+        pass
+    try:
+        from forecast_windows import market_frame
+        from predict import load_polymarket_data
+        for movie, markets in (load_polymarket_data(weekend_of=weekend_of) or {}).items():
+            frame = market_frame(movie, weekend_of, markets)
+            if frame and frame[0] < str(weekend_of):
+                out.append(movie)
+    except Exception as e:
+        print(f"  (markets not read for early openers: {type(e).__name__})")
+    seen, unique = set(), []
+    for title in out:
+        key = "".join(ch for ch in title.lower() if ch.isalnum())
+        if key not in seen:
+            seen.add(key)
+            unique.append(title)
+    return unique
+
+
+def fetch_upcoming_midweek(now_utc, fetch_table=None):
+    """Wednesday/Thursday of a pre-Friday opening are published before the
+    weekend this script tracks has begun: fetch them as they appear."""
+    import import_thenumbers_daily as N
+    import midweek_opening as M
+    weekend_of = upcoming_friday(now_utc)
+    if not weekend_of:
+        return 0
+    existing = M.read_csv()
+    appended = []
+    for movie in early_openers(weekend_of):
+        try:
+            daily = (fetch_table or (lambda t, y: N.fetch_daily_table(t, y, weekend_of=weekend_of)))(
+                movie, int(weekend_of[:4])) or {}
+        except Exception as e:
+            print(f"  ⚠️  fetch failed for {movie}: {e}")
+            continue
+        rows = midweek_rows_for(movie, weekend_of, daily, existing + appended,
+                                now_utc.strftime("%Y-%m-%d"))
+        appended.extend(rows)
+        if rows:
+            print(f"  {movie}: opening week {[(r['show_date'], r['day_kind'], r['gross_m']) for r in rows]}")
+    M.append_csv(appended)
+    if appended:
+        print(f"daily-actuals fetch: {len(appended)} opening-week row(s) for the weekend of {weekend_of}")
+    return len(appended)
+
+
 def main():
     import calibrate
+    import midweek_opening as M
     from predict import load_seat_data
 
     now_utc = datetime.now(timezone.utc)
+    try:
+        fetch_upcoming_midweek(now_utc)
+    except Exception as e:      # informational, like the rest of this script
+        print(f"  (upcoming pre-Friday openings not fetched: {type(e).__name__}: {e})")
     weekend_of = calibrate._last_friday()
     days = completed_days(weekend_of, now_utc)
     if not days:
@@ -204,13 +299,20 @@ def main():
         with open(OVERRIDES_CSV, newline="") as f:
             existing = list(csv.DictReader(f))
 
+    import import_thenumbers_daily as N
+    midweek_existing = M.read_csv()
+    midweek_appended = []
     appended = []
     for movie in movies:
         try:
-            fetched = fetch_split_opening_days(movie, weekend_of)
+            daily = N.fetch_daily_table(movie, int(str(weekend_of)[:4]), weekend_of=weekend_of) or {}
+            fetched = fetch_split_opening_days(movie, weekend_of, daily=daily)
         except Exception as e:
             print(f"  ⚠️  fetch failed for {movie}: {e}")
             continue
+        midweek_appended.extend(midweek_rows_for(
+            movie, weekend_of, daily, midweek_existing + midweek_appended,
+            now_utc.strftime("%Y-%m-%d")))
         day_gross = {d: g for d, g in fetched.items()
                      if d in days and d in SAFE_ANCHOR_DAYS}
         if not day_gross:
@@ -222,6 +324,9 @@ def main():
         kept = {r["day_of_week"]: r["gross_m"] for r in rows}
         print(f"  {movie}: fetched {day_gross} -> appending {kept or 'nothing (unchanged)'}")
 
+    if M.append_csv(midweek_appended):
+        print(f"daily-actuals fetch: {len(midweek_appended)} opening-week row(s) for films that "
+              f"opened before Friday {weekend_of}")
     if not appended:
         print("daily-actuals fetch: nothing new to record")
         return 0

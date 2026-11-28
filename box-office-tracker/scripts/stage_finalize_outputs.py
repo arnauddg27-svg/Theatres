@@ -20,6 +20,8 @@ OUTPUT_FILES = [
     "box-office-tracker/data/reviews.csv",
     "box-office-tracker/data/social-signals.csv",
     "box-office-tracker/data/daily-actual-overrides.csv",
+    # Day-by-day grosses of films that open before Friday (fetch_daily_actuals).
+    "box-office-tracker/data/midweek-opening-dailies.csv",
     "box-office-tracker/data/movie-metadata.csv",
     "box-office-tracker/data/census-coverage.csv",
     "box-office-tracker/data/prediction-log.csv",

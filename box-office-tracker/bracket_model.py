@@ -37,15 +37,20 @@ def movie_key(title):
     return re.sub(r"[^a-z0-9]", "", (title or "").lower())
 
 
+PREVIEWS_STAGE = "after-previews"
+
+
 def graded_log_ratios(pred_path=PREDICTION_LOG, cal_path=CALIBRATION_JSON):
     """{stage: [(weekend_of, movie_key, ln(actual/mid))]} using the LAST
     positive headline of each film at each stage."""
-    actual = {}
+    actual, midweek = {}, set()
     try:
         with open(cal_path) as f:
             for e in json.load(f).get("history", []) or []:
                 if e.get("actual_total") and e.get("weekend_of") and e.get("movie") and not e.get("data_outage"):
                     actual[(e["weekend_of"], movie_key(e["movie"]))] = float(e["actual_total"])
+                    if e.get("non_preview_thursday"):
+                        midweek.add((e["weekend_of"], movie_key(e["movie"])))
     except (OSError, ValueError):
         return {}
     latest = {}
@@ -63,7 +68,9 @@ def graded_log_ratios(pred_path=PREDICTION_LOG, cal_path=CALIBRATION_JSON):
     out = {}
     for (w, mk, stage), mid in latest.items():
         a = actual.get((w, mk))
-        if a:
+        # A film that opened before Friday was logged "after-previews" until
+        # 2026-11-28 although its Thursday is a full day: not a previews call.
+        if a and not (stage == PREVIEWS_STAGE and (w, mk) in midweek):
             out.setdefault(stage, []).append((w, mk, math.log(a / mid)))
     return out
 
@@ -106,12 +113,14 @@ ROW_FIT_MODE = (os.environ.get("BRACKET_ROW_FIT_MODE") or "on").strip().lower()
 def graded_row_ratios(pred_path=PREDICTION_LOG, cal_path=CALIBRATION_JSON, extra_actuals=None):
     """{stage: {(weekend_of, movie_key): [(source, ln(actual/mid)), ...]}} for
     every positive headline row of a graded film."""
-    actual = {}
+    actual, midweek = {}, set()
     try:
         with open(cal_path) as f:
             for e in json.load(f).get("history", []) or []:
                 if e.get("actual_total") and e.get("weekend_of") and e.get("movie") and not e.get("data_outage"):
                     actual[(e["weekend_of"], movie_key(e["movie"]))] = float(e["actual_total"])
+                    if e.get("non_preview_thursday"):
+                        midweek.add((e["weekend_of"], movie_key(e["movie"])))
     except (OSError, ValueError):
         return {}
     actual.update(extra_actuals or {})
@@ -124,7 +133,7 @@ def graded_row_ratios(pred_path=PREDICTION_LOG, cal_path=CALIBRATION_JSON, extra
                 except ValueError:
                     continue
                 k = (r.get("weekend_of"), movie_key(r.get("movie")))
-                if mid > 0 and k in actual:
+                if mid > 0 and k in actual and not (r.get("forecast_stage") == PREVIEWS_STAGE and k in midweek):
                     out.setdefault(r.get("forecast_stage"), {}).setdefault(k, []).append(
                         (r.get("source") or "", math.log(actual[k] / mid)))
     except OSError:
