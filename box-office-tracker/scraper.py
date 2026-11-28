@@ -7641,6 +7641,14 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
             results, issues, csv_rows, snapshot_rows = outcome
             all_results.extend(results)
             all_issues.extend(issues)
+            if cf_dark and (csv_rows or snapshot_rows):
+                # The lane is back: waves get their pauses again. Judged by
+                # rows actually read — the gate also opens when a check is
+                # merely slow, and that says nothing about the block.
+                cf_dark = False
+                cf_pauses_left = CF_BLOCK_PAUSES
+                print("\n🌕 seat lane reads again after the standing block — "
+                      f"{CF_BLOCK_PAUSES} pause(s) restored", flush=True)
             cf_block_streak, why = _hold_streak_during_pause(
                 cf_block_streak,
                 *_next_block_streak(cf_block_streak, results, snapshot_rows, issues),
@@ -7671,12 +7679,6 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
                     epoch=canary_epoch)
                 if action == "open":
                     cf_samples.clear()
-                    if cf_dark:
-                        # The lane is back: waves get their pauses again.
-                        cf_dark = False
-                        cf_pauses_left = CF_BLOCK_PAUSES
-                        print("\n🌕 seat lane reads again after the standing block — "
-                              f"{CF_BLOCK_PAUSES} pause(s) restored", flush=True)
                     if was_after_pause:
                         print("\n✅ seat lane reads again after the pause — back to every tab",
                               flush=True)

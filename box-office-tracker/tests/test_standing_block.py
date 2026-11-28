@@ -103,10 +103,13 @@ class DarkLegTest(unittest.TestCase):
         self.assertIn("cf_pauses_left = 0 if cf_dark else CF_BLOCK_PAUSES",
                       body[start:start + 200])
         self.assertIn("except Exception", body[start - 200:start])
+        restore = body.index("cf_pauses_left = CF_BLOCK_PAUSES", start + 200)
+        guard = body[restore - 500:restore]
+        # Restored on rows read, never on the gate merely opening: a slow
+        # check opens the gate too (CF_CANARY_SLOW_SEC) while still blocked.
+        self.assertIn("if cf_dark and (csv_rows or snapshot_rows):", guard)
         opened = body.index('if action == "open":', start)
-        restore = body.index("cf_pauses_left = CF_BLOCK_PAUSES", opened)
-        self.assertLess(restore - opened, 400)
-
+        self.assertNotIn("cf_pauses_left = CF_BLOCK_PAUSES", body[opened:opened + 400])
 
 if __name__ == "__main__":
     unittest.main()
